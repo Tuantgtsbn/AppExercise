@@ -36,9 +36,15 @@ const BottomTabNavigator = () => {
         options={{ headerTitleAlign: 'center' }}
       />
       <Tab.Screen
+<<<<<<< HEAD
         name='History'
         component={HistoryScreen}
         options={{ headerTitleAlign: 'center' }}
+=======
+        name='HealthOverview'
+        component={HealthOverviewScreen}
+        options={{ headerShown: false }}
+>>>>>>> 748ce61 (create healthOverview UI)
       />
       <Tab.Screen
         name='Profile'
