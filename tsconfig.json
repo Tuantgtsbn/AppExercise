@@ -4,7 +4,11 @@
     "strict": true,
     "baseUrl": "./",
     "paths": {
-      "@/*": ["app/*"]
+      "@/*": ["app/*"],
+      "@components/*": ["app/components/*"],
+      "@constants/*": ["app/constants/*"],
+      "@screens/*": ["app/screens/*"],
+      "@router/*": ["app/router/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
