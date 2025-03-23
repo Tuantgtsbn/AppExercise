@@ -5,6 +5,7 @@ import LoginScreen from '../screens/LoginScreen/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen/RegisterScreen';
 import HealthOverviewScreen from '@/screens/HealthOverviewScreen/HealthOverviewScreen';
 import HealthMetricScreen from '@/screens/HealthMetricScreen/HealthMetricScreen';
+import HealthCompareScreen from '@/screens/HealthCompareScreen/HealthCompareScreen';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,11 @@ const AppNavigator = () => {
       <Stack.Screen
         name='HealthMetric'
         component={HealthMetricScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name='HealthCompare'
+        component={HealthCompareScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
