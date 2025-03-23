@@ -63,7 +63,7 @@ const HealthOverviewScreen = ({ navigation }: { navigation: any }) => {
               lineHeight: 26
             }}
           >
-            Chỉ số sức khỏe
+            Chỉ số sức khỏe 1
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('HealthMetric')}>
             <Text
