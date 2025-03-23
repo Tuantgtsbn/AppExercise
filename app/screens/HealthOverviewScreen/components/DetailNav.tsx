@@ -63,7 +63,7 @@ const DetailNav = () => {
             {DetailItems.map((item, index) => (
               <TouchableOpacity
                 key={index}
-                onPress={() => navigation.navigate('HealthOverview')}
+                onPress={() => navigation.navigate(item.link)}
                 activeOpacity={0.7}
               >
                 <View

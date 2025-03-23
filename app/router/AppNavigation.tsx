@@ -1,10 +1,10 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import BottomTabNavigator from './TabNavigator';
 import LoginScreen from '../screens/LoginScreen/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen/RegisterScreen';
 import HealthOverviewScreen from '@/screens/HealthOverviewScreen/HealthOverviewScreen';
+import HealthMetricScreen from '@/screens/HealthMetricScreen/HealthMetricScreen';
 
 const Stack = createStackNavigator();
 
@@ -18,7 +18,16 @@ const AppNavigator = () => {
         component={BottomTabNavigator}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name='HealthOverview' component={HealthOverviewScreen} />
+      <Stack.Screen
+        name='HealthOverview'
+        component={HealthOverviewScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name='HealthMetric'
+        component={HealthMetricScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
