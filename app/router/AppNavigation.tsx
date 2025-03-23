@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import BottomTabNavigator from './TabNavigator';
 import LoginScreen from '../screens/LoginScreen/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen/RegisterScreen';
+import HealthOverviewScreen from '@/screens/HealthOverviewScreen/HealthOverviewScreen';
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ const AppNavigator = () => {
         component={BottomTabNavigator}
         options={{ headerShown: false }}
       />
+      <Stack.Screen name='HealthOverview' component={HealthOverviewScreen} />
     </Stack.Navigator>
   );
 };

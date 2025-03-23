@@ -1,10 +1,34 @@
+import { useNavigation } from 'expo-router';
 import { useState } from 'react';
 import { Dimensions, Image, Text, TouchableOpacity, View } from 'react-native';
+
+const DetailItems = [
+  {
+    title: 'Tổng quan sức khỏe',
+    icon: require('../../../../assets/images/chart-icon.png'),
+    link: 'HealthOverview'
+  },
+  {
+    title: 'Phân tích sức khỏe',
+    icon: require('../../../../assets/images/weight-scale.png'),
+    link: 'HealthMetric'
+  },
+  {
+    title: 'Tiến độ tập luyện',
+    icon: require('../../../../assets/images/barbel-icon.png'),
+    link: 'ExerciseProgress'
+  },
+  {
+    title: 'Chế độ ăn',
+    icon: require('../../../../assets/images/knife-plate.png'),
+    link: 'Diet'
+  }
+];
 
 const DetailNav = () => {
   const [isOpen, setOpen] = useState(false);
 
-    
+  const navigation = useNavigation() as any;
 
   return (
     <View style={{ position: 'relative' }}>
@@ -36,62 +60,28 @@ const DetailNav = () => {
           }}
         >
           <View style={{ gap: 7 }}>
-            <View
-              style={{
-                height: 44,
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 10,
-                paddingLeft: 16,
-                borderRadius: 16,
-                backgroundColor: '#F7F8F8'
-              }}
-            >
-              <Image source={require('../../../../assets/images/chart-icon.png')} />
-              <Text style={{ color: '#7B6F72' }}>Tổng quan sức khỏe</Text>
-            </View>
-            <View
-              style={{
-                height: 44,
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 10,
-                paddingLeft: 16,
-                borderRadius: 16,
-                backgroundColor: '#F7F8F8'
-              }}
-            >
-              <Image source={require('../../../../assets/images/weight-scale.png')} />
-              <Text style={{ color: '#7B6F72' }}>Phân tích sức khỏe</Text>
-            </View>
-            <View
-              style={{
-                height: 44,
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 10,
-                paddingLeft: 16,
-                borderRadius: 16,
-                backgroundColor: '#F7F8F8'
-              }}
-            >
-              <Image source={require('../../../../assets/images/barbel-icon.png')} />
-              <Text style={{ color: '#7B6F72' }}>Tiến độ tập luyện</Text>
-            </View>
-            <View
-              style={{
-                height: 44,
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 10,
-                paddingLeft: 16,
-                borderRadius: 16,
-                backgroundColor: '#F7F8F8'
-              }}
-            >
-              <Image source={require('../../../../assets/images/knife-plate.png')} />
-              <Text style={{ color: '#7B6F72' }}>Chế độ ăn</Text>
-            </View>
+            {DetailItems.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => navigation.navigate('HealthOverview')}
+                activeOpacity={0.7}
+              >
+                <View
+                  style={{
+                    height: 44,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 10,
+                    paddingLeft: 16,
+                    borderRadius: 16,
+                    backgroundColor: '#F7F8F8'
+                  }}
+                >
+                  <Image source={item.icon} />
+                  <Text style={{ color: '#7B6F72' }}>{item.title}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
       )}

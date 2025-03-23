@@ -3,6 +3,7 @@ import { View, Text, ScrollView, Image, Button, TouchableOpacity, StyleSheet } f
 
 import { createStackNavigator } from '@react-navigation/stack';
 import HealthMetricSection from './components/HealthMetricSection';
+import Header from './components/Header';
 
 const Stack = createStackNavigator();
 
@@ -17,31 +18,7 @@ const HealthOverviewScreen = ({ navigation }: { navigation: any }) => {
       }}
     >
       // Header
-      <View
-        style={{
-          position: 'relative',
-
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
-        <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#1D1617' }}>
-          Tổng quan sức khỏe
-        </Text>
-
-        <TouchableOpacity
-          style={{
-            position: 'absolute',
-            right: 0,
-            width: 32,
-            height: 32,
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <Image source={require('../../../assets/images/dots-icon.png')} style={{}} />
-        </TouchableOpacity>
-      </View>
+      <Header title='Tổng quan sức khỏe' />
       {/* Health Metric */}
       <View
         style={{
@@ -63,7 +40,7 @@ const HealthOverviewScreen = ({ navigation }: { navigation: any }) => {
               lineHeight: 26
             }}
           >
-            Chỉ số sức khỏe 1
+            Chỉ số sức khỏe
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('HealthMetric')}>
             <Text
