@@ -1,11 +1,8 @@
 import React from 'react';
 import { View, Text, ScrollView, Image, Button, TouchableOpacity, StyleSheet } from 'react-native';
 
-import { createStackNavigator } from '@react-navigation/stack';
 import HealthMetricSection from './components/HealthMetricSection';
 import Header from './components/Header';
-
-const Stack = createStackNavigator();
 
 const HealthOverviewScreen = ({ navigation }: { navigation: any }) => {
   return (
@@ -133,7 +130,7 @@ const HealthOverviewScreen = ({ navigation }: { navigation: any }) => {
             <View
               style={{ flex: 1, justifyContent: 'center', alignContent: 'center', marginTop: 18 }}
             >
-              <Image style={{}} source={require('../../../assets/images/calories-pie-icon.png')} />
+              <Image source={require('../../../assets/images/calories-pie-icon.png')} />
             </View>
           </View>
 

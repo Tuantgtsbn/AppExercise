@@ -16,7 +16,7 @@ const DetailItems = [
   {
     title: 'Tiến độ tập luyện',
     icon: require('../../../../assets/images/barbel-icon.png'),
-    link: 'ExerciseProgress'
+    link: 'WorkoutProgress'
   },
   {
     title: 'Chế độ ăn',
