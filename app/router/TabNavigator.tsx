@@ -4,7 +4,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
 import ExerciseScreen from '../screens/ExerciseScreen/ExerciseScreen';
-import HistoryScreen from '../screens/HistoryScreen/HistoryScreen';
+import HealthOverviewScreen from '@/screens/HealthOverviewScreen/HealthOverviewScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,7 +20,7 @@ const BottomTabNavigator = () => {
             iconName = focused ? 'person' : 'person-outline';
           } else if (route.name === 'Exercise') {
             iconName = focused ? 'barbell' : 'barbell-outline';
-          } else if (route.name === 'History') {
+          } else if (route.name === 'HealthOverview') {
             iconName = focused ? 'document-text' : 'document-text-outline';
           }
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -36,9 +36,9 @@ const BottomTabNavigator = () => {
         options={{ headerTitleAlign: 'center' }}
       />
       <Tab.Screen
-        name='History'
-        component={HistoryScreen}
-        options={{ headerTitleAlign: 'center' }}
+        name='HealthOverview'
+        component={HealthOverviewScreen}
+        options={{ headerShown: false }}
       />
       <Tab.Screen
         name='Profile'
