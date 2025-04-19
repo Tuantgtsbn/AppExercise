@@ -9,7 +9,9 @@ import HealthCompareScreen from '@/screens/HealthCompareScreen/HealthCompareScre
 import HealthCompareResultScreen from '@/screens/HealthCompareResultScreen/HealthCompareResultScreen';
 import HealthUpdateScreen from '@/screens/HealthUpdateScreen/HealthUpdateScreen';
 import WorkoutProgressScreen from '@/screens/WorkoutProgressScreen/workoutProgressScreen';
-import MealPlanScreen from '@/screens/MealPlanScreen/MealScheduleScreen';
+import MealSearchScreen from '@/screens/MealSearchScreen/MealSearchScreen';
+import MealPlanScreen from '@/screens/MealPlanScreen/MealPlanScreen';
+import MealSearchResultScreen from '@/screens/MealSearchResultScreen/MealSearchResultScreen';
 
 const Stack = createStackNavigator();
 
@@ -55,9 +57,15 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
 
+      <Stack.Screen name='MealPlan' component={MealPlanScreen} options={{ headerShown: false }} />
       <Stack.Screen
-        name='MealPlan'
-        component={MealPlanScreen}
+        name='MealSearch'
+        component={MealSearchScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name='MealSearchResult'
+        component={MealSearchResultScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

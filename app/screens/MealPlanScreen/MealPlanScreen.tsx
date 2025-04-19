@@ -2,8 +2,11 @@ import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'rea
 import Header from '../HealthOverviewScreen/components/Header';
 import TimeDropdown from './components/timeDropdown';
 import MealDropdown from './components/mealDropdow';
+import { useNavigation } from 'expo-router';
 
 const MealPlanScreen = () => {
+  const navigation = useNavigation() as any;
+
   return (
     <ScrollView style={styles.container}>
       <Header title='Kế Hoạch Bữa Ăn' />
@@ -134,9 +137,27 @@ const MealPlanScreen = () => {
           </View>
         </View>
 
-        <Text style={{ color: '#1D1617', fontSize: 16, fontWeight: 'semibold', marginTop: 20 }}>
-          Tìm món ăn
-        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 20
+          }}
+        >
+          <Text style={{ color: '#1D1617', fontSize: 16, fontWeight: 'semibold' }}>Tìm món ăn</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('MealSearch')}>
+            <Text
+              style={{
+                color: '#ADA4A5',
+                fontSize: 12,
+                fontWeight: 'medium'
+              }}
+            >
+              Xem thêm
+            </Text>
+          </TouchableOpacity>
+        </View>
         <ScrollView horizontal>
           <View style={{ flexDirection: 'row', gap: 15, paddingBottom: 50 }}>
             <View

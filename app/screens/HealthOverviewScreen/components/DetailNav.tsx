@@ -21,7 +21,7 @@ const DetailItems = [
   {
     title: 'Chế độ ăn',
     icon: require('../../../../assets/images/knife-plate.png'),
-    link: 'MealSchedule'
+    link: 'MealPlan'
   }
 ];
 
