@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { Image, ImageBackground, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -32,6 +33,8 @@ const NEW_FOODS = [
 ];
 
 const NewFoodSection = () => {
+  const navigation = useNavigation() as any;
+
   return (
     <View style={{ gap: 10 }}>
       <Text style={{ color: '#1D1617', fontSize: 16, fontWeight: 'bold' }}>Mới</Text>
@@ -78,6 +81,7 @@ const NewFoodSection = () => {
                     borderRadius: 50,
                     backgroundColor: '#98B9FE'
                   }}
+                  onPress={() => navigation.navigate('MealDetail')}
                 >
                   <Text style={{ fontSize: 14, fontWeight: 'semibold', color: '#ffffff' }}>
                     Xem
