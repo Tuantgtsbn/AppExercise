@@ -214,15 +214,17 @@ const HealthOverviewScreen = ({ navigation }: { navigation: any }) => {
           >
             Kế hoạch bữa ăn
           </Text>
-          <Text
-            style={{
-              color: '#ADA4A5',
-              fontSize: 12,
-              fontWeight: 'medium'
-            }}
-          >
-            Xem thêm
-          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('MealPlan')}>
+            <Text
+              style={{
+                color: '#ADA4A5',
+                fontSize: 12,
+                fontWeight: 'medium'
+              }}
+            >
+              Xem thêm
+            </Text>
+          </TouchableOpacity>
         </View>
 
         <View
