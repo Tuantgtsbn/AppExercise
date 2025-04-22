@@ -1,9 +1,16 @@
 import React from 'react';
 import { View, Text, ScrollView, Image, Button, TouchableOpacity, StyleSheet } from 'react-native';
 
-import HealthMetricSection from './components/HealthMetricSection';
+import HealthMetricSection from './components/HealthMetric';
 import Header from './components/Header';
-
+import HealthMetric from './components/HealthMetric';
+const healthData = [
+  { label: 'Chiều cao', value: '180cm' },
+  { label: 'Cân nặng', value: '75kg' },
+  { label: 'Tuổi', value: '22' },
+  { label: 'LBM', value: '55kg' },
+  { label: 'Abs', value: '8%' }
+];
 const HealthOverviewScreen = ({ navigation }: { navigation: any }) => {
   return (
     <ScrollView
@@ -14,8 +21,9 @@ const HealthOverviewScreen = ({ navigation }: { navigation: any }) => {
         paddingTop: 10
       }}
     >
-      // Header
+      {/* Header */}
       <Header title='Tổng quan sức khỏe' />
+
       {/* Health Metric */}
       <View
         style={{
@@ -52,7 +60,18 @@ const HealthOverviewScreen = ({ navigation }: { navigation: any }) => {
           </TouchableOpacity>
         </View>
 
-        <HealthMetricSection />
+        <View
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            gap: 15,
+            marginTop: 2
+          }}
+        >
+          {healthData.map((item, index) => (
+            <HealthMetric key={index} item={item} />
+          ))}
+        </View>
       </View>
       {/* Tracker */}
       <View

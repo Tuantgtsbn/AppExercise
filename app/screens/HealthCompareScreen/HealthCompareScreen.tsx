@@ -72,7 +72,7 @@ const HealthCompareScreen = () => {
             borderRadius: 50,
             backgroundColor: '#97B8FE'
           }}
-          onPress={() => navigation.navigate('HealthCompareResult')}
+          onPress={() => navigation.navigate('HealthCompareResultScreen')}
         >
           <Text
             style={{

@@ -1,23 +1,23 @@
-import { useNavigation } from 'expo-router';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import DetailNav from './DetailNav';
+import { useNavigation } from '@react-navigation/native';
 
 const Header = ({ title }: { title: string }) => {
-  const navigation = useNavigation() as any;
+  const navigation = useNavigation();
 
   return (
     <View
       style={{
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center'
       }}
     >
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Image style={{}} source={require('../../../../assets/images/left-arrow.png')} />
-      </TouchableOpacity>
-
-      <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#1D1617' }}>{title}</Text>
+      <Text
+        className='flex-1 text-center'
+        style={{ fontSize: 16, fontWeight: 'bold', color: '#1D1617' }}
+      >
+        {title}
+      </Text>
 
       <DetailNav />
     </View>

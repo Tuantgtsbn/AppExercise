@@ -6,17 +6,17 @@ const DetailItems = [
   {
     title: 'Tổng quan sức khỏe',
     icon: require('../../../../assets/images/chart-icon.png'),
-    link: 'HealthOverview'
+    link: 'HealthOverScreen'
   },
   {
     title: 'Phân tích sức khỏe',
     icon: require('../../../../assets/images/weight-scale.png'),
-    link: 'HealthMetric'
+    link: 'HealthMetricScreen'
   },
   {
     title: 'Tiến độ tập luyện',
     icon: require('../../../../assets/images/barbel-icon.png'),
-    link: 'WorkoutProgress'
+    link: 'WorkoutProgressScreen'
   },
   {
     title: 'Chế độ ăn',

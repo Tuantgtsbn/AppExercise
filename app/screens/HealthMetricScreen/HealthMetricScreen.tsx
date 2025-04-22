@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, Image, Button, TouchableOpacity, StyleSheet } from 'react-native';
-import HealthMetricSection from '../HealthOverviewScreen/components/HealthMetricSection';
+import HealthMetricSection from '../HealthOverviewScreen/components/HealthMetric';
 import { useNavigation } from '@react-navigation/native';
 import Header from '../HealthOverviewScreen/components/Header';
 
@@ -89,7 +89,7 @@ const HealthMetricScreen = () => {
               backgroundColor: '#97B8FE'
             }}
           >
-            <TouchableOpacity onPress={() => navigation.navigate('HealthUpdate')}>
+            <TouchableOpacity onPress={() => navigation.navigate('HealthUpdateScreen')}>
               <Text
                 style={{
                   color: '#FFFFFF',
@@ -135,7 +135,7 @@ const HealthMetricScreen = () => {
             borderRadius: 50,
             backgroundColor: '#97B8FE'
           }}
-          onPress={() => navigation.navigate('HealthCompare')}
+          onPress={() => navigation.navigate('HealthCompareScreen')}
         >
           <Text
             style={{
@@ -169,10 +169,12 @@ const HealthMetricScreen = () => {
           >
             Chỉ số sức khỏe
           </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('HealthMetric')}></TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('HealthMetricScreen')}
+          ></TouchableOpacity>
         </View>
 
-        <HealthMetricSection />
+        {/* <HealthMetricSection  /> */}
       </View>
     </ScrollView>
   );

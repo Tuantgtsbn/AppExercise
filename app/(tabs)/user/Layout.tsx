@@ -1,10 +1,10 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import HomeScreen from '../screens/HomeScreen/HomeScreen';
-import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
-import ExerciseScreen from '../screens/ExerciseScreen/ExerciseScreen';
-import HealthOverviewScreen from '@/screens/HealthOverviewScreen/HealthOverviewScreen';
+import HomeLayout from './home/Layout';
+import ExerciseLayout from './exercise/Layout';
+import HealthLayout from './health/Layout';
+import ProfileLayout from './profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,13 +14,13 @@ const BottomTabNavigator = () => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-          if (route.name === 'Home') {
+          if (route.name === 'HomeScreenTab') {
             iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Profile') {
+          } else if (route.name === 'ProfileScreenTab') {
             iconName = focused ? 'person' : 'person-outline';
-          } else if (route.name === 'Exercise') {
+          } else if (route.name === 'ExerciseScreenTab') {
             iconName = focused ? 'barbell' : 'barbell-outline';
-          } else if (route.name === 'HealthOverview') {
+          } else if (route.name === 'HealthScreenTab') {
             iconName = focused ? 'document-text' : 'document-text-outline';
           }
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -29,21 +29,25 @@ const BottomTabNavigator = () => {
         tabBarInactiveTintColor: 'gray'
       })}
     >
-      <Tab.Screen name='Home' component={HomeScreen} options={{ headerTitleAlign: 'center' }} />
       <Tab.Screen
-        name='Exercise'
-        component={ExerciseScreen}
-        options={{ headerTitleAlign: 'center' }}
+        name='HomeScreenTab'
+        component={HomeLayout}
+        options={{ headerTitleAlign: 'center', title: 'Trang chủ' }}
       />
       <Tab.Screen
-        name='HealthOverview'
-        component={HealthOverviewScreen}
+        name='ExerciseScreenTab'
+        component={ExerciseLayout}
+        options={{ headerTitleAlign: 'center', title: 'Bài tập' }}
+      />
+      <Tab.Screen
+        name='HealthScreenTab'
+        component={HealthLayout}
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name='Profile'
-        component={ProfileScreen}
-        options={{ headerTitleAlign: 'center' }}
+        name='ProfileScreenTab'
+        component={ProfileLayout}
+        options={{ headerShown: false }}
       />
     </Tab.Navigator>
   );
