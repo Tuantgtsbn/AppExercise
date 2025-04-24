@@ -286,6 +286,7 @@ const MealDetailScreen = () => {
             borderRadius: 50,
             backgroundColor: '#98B9FE'
           }}
+          onPress={() => navigation.navigate('AddMealSchedule')}
         >
           <Text style={{ color: '#ffffff', fontSize: 16, fontWeight: 'bold' }}>Thêm vào lịch</Text>
         </TouchableOpacity>
