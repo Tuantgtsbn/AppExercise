@@ -1,7 +1,6 @@
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from '../HealthOverviewScreen/components/Header';
 import { useNavigation } from 'expo-router';
-import DetailNav from '../HealthOverviewScreen/components/DetailNav';
 import QuantityMealSelect from './components/quantityMealSelect';
 import TimePicker from './components/datetimePicker';
 import DatePicker from './components/datePicker';
@@ -73,6 +72,7 @@ const AddMealScheduleScreen = () => {
         }}
       >
         <TouchableOpacity
+          onPress={() => navigation.navigate('MealSchedule')}
           style={{
             width: 315,
             height: 60,

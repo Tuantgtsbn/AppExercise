@@ -14,6 +14,7 @@ import MealPlanScreen from '@/screens/MealPlanScreen/MealPlanScreen';
 import MealSearchResultScreen from '@/screens/MealSearchResultScreen/MealSearchResultScreen';
 import MealDetailScreen from '@/screens/MealDetailScreen/MealDetailScreen';
 import AddMealScheduleScreen from '@/screens/AddMealScheduleScreen/AddMealScheduleScreen';
+import MealScheduleScreen from '@/screens/MealScheduleScreen/MealScheduleScreen';
 
 const Stack = createStackNavigator();
 
@@ -79,6 +80,12 @@ const AppNavigator = () => {
       <Stack.Screen
         name='AddMealSchedule'
         component={AddMealScheduleScreen}
+        options={{ headerShown: false }}
+      ></Stack.Screen>
+
+      <Stack.Screen
+        name='MealSchedule'
+        component={MealScheduleScreen}
         options={{ headerShown: false }}
       ></Stack.Screen>
     </Stack.Navigator>
