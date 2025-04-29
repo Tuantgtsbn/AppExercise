@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, Image, Button, TouchableOpacity, StyleSheet } from 'react-native';
-import HealthMetricSection from '../HealthOverviewScreen/components/HealthMetricSection';
+import HealthMetricSection from '../HealthOverviewScreen/layouts/HealthMetricSection';
 import { useNavigation } from '@react-navigation/native';
 import Header from '../HealthOverviewScreen/components/Header';
 
