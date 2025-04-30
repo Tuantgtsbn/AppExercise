@@ -2,67 +2,26 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Header from '../HealthOverviewScreen/components/Header';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from 'expo-router';
+import SelectMonth1Modal from './components/selectMonth1Modal';
+import { useState } from 'react';
+import SelectMonth2Modal from './components/selectMonth2Modal';
 
 const HealthCompareScreen = () => {
   const navigation = useNavigation() as any;
+
+  const [month1, setMonth1] = useState(1);
+  const [month2, setMonth2] = useState(2);
 
   return (
     <ScrollView style={styles.container}>
       <Header title='So sánh' />
 
       <View style={{ gap: 10, marginTop: 20 }}>
-        <View
-          style={{
-            height: 48,
-            ...styles.row,
-            padding: 10,
-            borderRadius: 20,
-            backgroundColor: '#F7F8F8'
-          }}
-        >
-          <View
-            style={{
-              ...styles.row,
-              gap: 10
-            }}
-          >
-            <Image source={require('../../../assets/images/calendar-icon.png')} />
-            <Text style={styles.text}>Chọn tháng 1</Text>
-          </View>
-
-          <View style={styles.row}>
-            <Text style={styles.text}>Tháng 5</Text>
-            <Image source={require('../../../assets/images/right-arrow.png')} />
-          </View>
-        </View>
-
-        <View
-          style={{
-            height: 48,
-            ...styles.row,
-            padding: 10,
-            borderRadius: 20,
-            backgroundColor: '#F7F8F8'
-          }}
-        >
-          <View
-            style={{
-              ...styles.row,
-              gap: 10
-            }}
-          >
-            <Image source={require('../../../assets/images/calendar-icon.png')} />
-            <Text style={styles.text}>Chọn tháng 1</Text>
-          </View>
-
-          <View style={styles.row}>
-            <Text style={styles.text}>Tháng 5</Text>
-            <Image source={require('../../../assets/images/right-arrow.png')} />
-          </View>
-        </View>
+        <SelectMonth1Modal month1={month1} setMonth1={setMonth1} />
+        <SelectMonth2Modal month2={month2} setMonth2={setMonth2} />
       </View>
 
-      <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 520 }}>
+      <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 490 }}>
         <TouchableOpacity
           style={{
             width: 315,
