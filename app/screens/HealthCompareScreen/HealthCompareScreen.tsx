@@ -90,7 +90,7 @@ const HealthCompareScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 30, paddingTop: 10 },
+  container: { flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 20, paddingTop: 10 },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   text: { color: '#7B6F72', fontSize: 10 }
 });
