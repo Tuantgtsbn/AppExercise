@@ -6,7 +6,6 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Xử lý đăng nhập
     navigation.replace('MainApp');
   };
 

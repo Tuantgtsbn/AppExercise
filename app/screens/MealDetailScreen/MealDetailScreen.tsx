@@ -1,5 +1,4 @@
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Header from '../HealthOverviewScreen/components/Header';
 import { useNavigation } from 'expo-router';
 import DetailNav from '../HealthOverviewScreen/components/DetailNav';
 import { NUTRITIONS } from './utils/constant';
@@ -31,7 +30,6 @@ const MealDetailScreen = () => {
 
         <Image
           style={{
-            //   borderRadius: 16
             width: '100%',
             height: 390
           }}

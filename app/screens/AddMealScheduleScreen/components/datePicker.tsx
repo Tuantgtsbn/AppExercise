@@ -8,7 +8,7 @@ const DatePicker: React.FC = () => {
 
   const onChange = (event: any, selectedDate?: Date) => {
     if (Platform.OS === 'android') {
-      setShow(false); // Ẩn sau khi chọn
+      setShow(false); // 
     }
 
     if (selectedDate) {
@@ -16,7 +16,6 @@ const DatePicker: React.FC = () => {
     }
   };
 
-  // 🧠 Format ngày sang "Thứ..., dd tháng mm năm yyyy"
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('vi-VN', {
       weekday: 'long',

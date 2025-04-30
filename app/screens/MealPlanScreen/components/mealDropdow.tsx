@@ -44,7 +44,7 @@ const MealDropdown = () => {
           style={{
             position: 'absolute',
             top: 24,
-            left: -6,
+            left: 0,
             width: 86,
             backgroundColor: '#fff',
             padding: 10,

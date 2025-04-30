@@ -16,7 +16,6 @@ const HealthOverviewScreen = () => {
         paddingTop: 10
       }}
     >
-      // Header
       <Header title='Tổng quan sức khỏe' />
       <HealthMetricSection />
       <WorkoutProgressSection />
