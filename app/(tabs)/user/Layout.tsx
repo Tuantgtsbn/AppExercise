@@ -42,12 +42,12 @@ const BottomTabNavigator = () => {
       <Tab.Screen
         name='HealthScreenTab'
         component={HealthLayout}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, title: 'Sức khỏe' }}
       />
       <Tab.Screen
         name='ProfileScreenTab'
         component={ProfileLayout}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, title: 'Hồ sơ' }}
       />
     </Tab.Navigator>
   );

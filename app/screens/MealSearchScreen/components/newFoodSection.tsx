@@ -81,7 +81,7 @@ const NewFoodSection = () => {
                     borderRadius: 50,
                     backgroundColor: '#98B9FE'
                   }}
-                  onPress={() => navigation.navigate('MealDetail')}
+                  onPress={() => navigation.navigate('MealDetailScreen')}
                 >
                   <Text style={{ fontSize: 14, fontWeight: 'semibold', color: '#ffffff' }}>
                     Xem

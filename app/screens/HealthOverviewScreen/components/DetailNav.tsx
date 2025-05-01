@@ -6,7 +6,7 @@ const DetailItems = [
   {
     title: 'Tổng quan sức khỏe',
     icon: require('../../../../assets/images/chart-icon.png'),
-    link: 'HealthOverScreen'
+    link: 'HealthOverviewScreen'
   },
   {
     title: 'Phân tích sức khỏe',
@@ -21,7 +21,7 @@ const DetailItems = [
   {
     title: 'Chế độ ăn',
     icon: require('../../../../assets/images/knife-plate.png'),
-    link: 'MealPlan'
+    link: 'MealPlanScreen'
   }
 ];
 

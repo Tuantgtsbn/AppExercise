@@ -20,7 +20,7 @@ const MealSearchScreen = () => {
 
   const handleSearch = () => {
     if (text.trim()) {
-      navigation.navigate('MealSearchResult');
+      navigation.navigate('MealSearchResultScreen');
     }
   };
 

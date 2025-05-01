@@ -47,7 +47,7 @@ const HealthOverviewScreen = ({ navigation }: { navigation: any }) => {
           >
             Chỉ số sức khỏe
           </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('HealthMetric')}>
+          <TouchableOpacity onPress={() => navigation.navigate('HealthMetricScreen')}>
             <Text
               style={{
                 color: '#ADA4A5',
@@ -214,7 +214,7 @@ const HealthOverviewScreen = ({ navigation }: { navigation: any }) => {
           >
             Kế hoạch bữa ăn
           </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('MealPlan')}>
+          <TouchableOpacity onPress={() => navigation.navigate('MealPlanScreen')}>
             <Text
               style={{
                 color: '#ADA4A5',

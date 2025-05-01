@@ -146,7 +146,7 @@ const MealPlanScreen = () => {
           }}
         >
           <Text style={{ color: '#1D1617', fontSize: 16, fontWeight: 'semibold' }}>Tìm món ăn</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('MealSearch')}>
+          <TouchableOpacity onPress={() => navigation.navigate('MealSearchScreen')}>
             <Text
               style={{
                 color: '#ADA4A5',
