@@ -8,6 +8,7 @@ import Toast from 'react-native-toast-message';
 import { ActivityIndicator, View } from 'react-native';
 import { Provider } from 'react-redux';
 import { store } from '../redux/store';
+import i18n from './i18n';
 SplashScreen.preventAutoHideAsync();
 export default function Index() {
   const [appIsReady, setAppIsReady] = useState(false);

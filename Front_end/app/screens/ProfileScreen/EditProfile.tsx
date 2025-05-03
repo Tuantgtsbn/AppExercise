@@ -11,55 +11,78 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import CustomHeader from '@/components/ui/CustomHeader';
-import { AntDesign } from '@expo/vector-icons';
+
 import DropDownPicker from 'react-native-dropdown-picker';
 import { format } from 'date-fns';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import className from 'classnames';
 
 import Toast from 'react-native-toast-message';
-type MetricType = {
-  unit: string;
-  value: number;
-};
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
+import AvatarPicker from './Components/AvatarPicker';
+import { updateUser } from 'redux/AuthSlice';
+import { useTranslation } from 'react-i18next';
 type FormDataType = {
-  nameDisplay: string;
+  first_name: string;
+  last_name: string;
   email: string;
   phone: string;
-  height: MetricType;
-  weight: MetricType;
-  gender: 'male' | 'female' | 'other';
-  dateOfBirth: string;
+  height: string;
+  weight: string;
+  gender: string;
+  fitness_level: string;
+  date_of_birth: string;
 };
 type Gender = 'male' | 'female' | 'other';
 export default function EditProfile({ navigation }) {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { id } = useSelector((state: RootState) => state.auth.user);
+  const {
+    first_name,
+    last_name,
+    email,
+    phone,
+    height,
+    weight,
+    fitness_level,
+    gender,
+    date_of_birth,
+    profile_img_url
+  } = useSelector((state: RootState) => state.auth.detailUser);
+  console.log(typeof date_of_birth, date_of_birth);
   const [formData, setFormData] = useState<FormDataType>({
-    nameDisplay: 'A',
-    email: '',
-    phone: '',
-    height: {
-      unit: 'cm',
-      value: 0
-    },
-    weight: {
-      unit: 'kg',
-      value: 0
-    },
-    gender: 'male',
-    dateOfBirth: new Date().toISOString()
+    first_name: first_name || '',
+    last_name: last_name || '',
+    email: email || '',
+    phone: phone || '',
+    height: String(height) || '',
+    weight: String(weight) || '',
+    fitness_level: fitness_level || 'beginner',
+    gender: gender || 'male',
+
+    date_of_birth: format(new Date(date_of_birth), 'yyyy-MM-dd')
   });
   console.log(formData);
-  const [open, setOpen] = useState(false);
+  const [openGender, setOpenGender] = useState(false);
+  const [openFitness, setOpenFitness] = useState(false);
   const [selectedGender, setSelectedGender] = useState(formData.gender);
   // console.log(selectedGender);
-  const [heightInput, setHeightInput] = useState(String(formData.height.value) || '');
-  const [weightInput, setWeightInput] = useState(String(formData.weight.value) || '');
+  const [heightInput, setHeightInput] = useState(formData.height);
+  const [weightInput, setWeightInput] = useState(formData.weight);
   const [genders, setGenders] = useState([
-    { label: 'Nam', value: 'male' },
-    { label: 'Nữ', value: 'female' },
-    { label: 'Khác', value: 'other' }
+    { label: t('male', { ns: 'common' }), value: 'male' },
+    { label: t('female', { ns: 'common' }), value: 'female' },
+    { label: t('other', { ns: 'common' }), value: 'other' }
   ]);
-  const [dob, setDob] = useState(new Date(formData.dateOfBirth));
+  const [fitnessLevel, setFitnessLevel] = useState([
+    { label: t('beginner', { ns: 'common' }), value: 'beginner' },
+    { label: t('intermediate', { ns: 'common' }), value: 'intermediate' },
+    { label: t('advanced', { ns: 'common' }), value: 'advanced' },
+    { label: t('professional', { ns: 'common' }), value: 'professional' }
+  ]);
+  const [selectedFitnessLevel, setSelectedFitnessLevel] = useState(formData.fitness_level);
+  const [dob, setDob] = useState(new Date(formData.date_of_birth));
   const [showDatePicker, setShowDatePicker] = useState(false);
   const onDateChange = (event: any, selectedDate?: Date) => {
     setShowDatePicker(Platform.OS === 'ios');
@@ -67,7 +90,7 @@ export default function EditProfile({ navigation }) {
       setDob(selectedDate);
       setFormData({
         ...formData,
-        dateOfBirth: format(selectedDate, 'yyyy-MM-dd')
+        date_of_birth: format(selectedDate, 'yyyy-MM-dd')
       });
     }
   };
@@ -84,14 +107,47 @@ export default function EditProfile({ navigation }) {
       }));
     }
   };
+  const handleFitnessLevelChange = (value: any) => {
+    if (value) {
+      setSelectedFitnessLevel(value);
+      setFormData(prev => ({
+        ...prev,
+        fitness_level: value()
+      }));
+    }
+  };
   const handleEditProfile = async () => {
     if (!parseFloat(heightInput) || !parseFloat(weightInput)) {
       Toast.show({
         type: 'error',
-        text1: 'Lỗi',
-        text2: 'Vui lòng nhập đúng định dạng số'
+        text1: t('failed', { ns: 'errors' }),
+        text2: t('invalidNumber', { ns: 'errors' })
       });
       return;
+    }
+    try {
+      await dispatch(
+        updateUser({
+          userId: id,
+          updatedData: {
+            ...formData,
+            height: parseFloat(heightInput),
+            weight: parseFloat(weightInput)
+          }
+        })
+      ).unwrap();
+      Toast.show({
+        type: 'success',
+        text1: t('success', { ns: 'errors' }),
+        text2: 'Cập nhật thông tin thành công'
+      });
+      navigation.goBack();
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: t('failed', { ns: 'errors' }),
+        text2: t('updateFailed', { ns: 'errors' })
+      });
     }
   };
   return (
@@ -102,25 +158,38 @@ export default function EditProfile({ navigation }) {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView className='flex-1 bg-white'>
           <View className='mt-[16px] items-center'>
-            <CustomHeader title='Chỉnh sửa thông tin' />
-            <View className='w-[112px] h-[112px] justify-center items-center rounded-full bg-gray-300 mt-[35px]'>
-              <AntDesign name='user' size={70} color='black' />
-              <AntDesign name='camerao' size={24} color='black' />
-            </View>
+            <CustomHeader title={t('editProfile', { ns: 'profileScreen' })} />
+            <AvatarPicker avatarURL={profile_img_url} />
             <View className='px-[35px] mt-[16px]'>
-              <Text className='font-bold text-[20px] my-[8px]'>Tên hiển thị</Text>
+              <Text className='font-bold text-[20px] my-[8px]'>
+                {t('firstName', { ns: 'common' })}
+              </Text>
               <TextInput
                 className='border border-gray-300 rounded-[8px] p-[10px]'
                 placeholder='Tên hiển thị'
-                value={formData.nameDisplay}
+                value={formData.first_name}
                 onChangeText={text =>
                   setFormData({
                     ...formData,
-                    nameDisplay: text
+                    first_name: text
                   })
                 }
               />
-              <Text className='font-bold text-[20px] my-[8px]'>Số điện thoại</Text>
+              <Text className='font-bold text-[20px] my-[8px]'>
+                {t('lastName', { ns: 'common' })}
+              </Text>
+              <TextInput
+                className='border border-gray-300 rounded-[8px] p-[10px]'
+                placeholder='Tên hiển thị'
+                value={formData.last_name}
+                onChangeText={text =>
+                  setFormData({
+                    ...formData,
+                    last_name: text
+                  })
+                }
+              />
+              <Text className='font-bold text-[20px] my-[8px]'>{t('phone', { ns: 'common' })}</Text>
               <TextInput
                 className='border border-gray-300 rounded-[8px] p-[10px]'
                 placeholder='Số điện thoại'
@@ -132,7 +201,7 @@ export default function EditProfile({ navigation }) {
                   })
                 }
               />
-              <Text className='font-bold text-[20px] my-[8px]'>Email</Text>
+              <Text className='font-bold text-[20px] my-[8px]'>{t('email', { ns: 'common' })}</Text>
               <TextInput
                 className='border border-gray-300 rounded-[8px] p-[10px]'
                 placeholder='Email'
@@ -145,40 +214,9 @@ export default function EditProfile({ navigation }) {
                 }
               />
               <View className='flex-row justify-between my-[8px] items-center'>
-                <Text className='font-bold text-[20px]'>Chiều cao</Text>
-                <View className='flex-row bg-brand p-1 gap-2 rounded-lg'>
-                  <TouchableOpacity
-                    className={className('p-2 rounded-lg', {
-                      'bg-white': formData.height.unit === 'cm'
-                    })}
-                    onPress={() =>
-                      setFormData({
-                        ...formData,
-                        height: {
-                          ...formData.height,
-                          unit: 'cm'
-                        }
-                      })
-                    }
-                  >
-                    <Text>CM</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    className={className('p-2 rounded-lg', {
-                      'bg-white': formData.height.unit === 'm'
-                    })}
-                    onPress={() =>
-                      setFormData({
-                        ...formData,
-                        height: {
-                          ...formData.height,
-                          unit: 'm'
-                        }
-                      })
-                    }
-                  >
-                    <Text>M</Text>
-                  </TouchableOpacity>
+                <Text className='font-bold text-[20px]'>{t('height', { ns: 'common' })}</Text>
+                <View className='w-[30px] bg-brand p-1 rounded-lg'>
+                  <Text className='text-center'>CM</Text>
                 </View>
               </View>
               <TextInput
@@ -189,40 +227,9 @@ export default function EditProfile({ navigation }) {
                 onChangeText={setHeightInput}
               />
               <View className='flex-row justify-between my-[8px] items-center'>
-                <Text className='font-bold text-[20px]'>Cân nặng</Text>
-                <View className='flex-row bg-brand p-1 gap-2 rounded-lg'>
-                  <TouchableOpacity
-                    className={className('p-2 rounded-lg', {
-                      'bg-white': formData.weight.unit === 'kg'
-                    })}
-                    onPress={() =>
-                      setFormData({
-                        ...formData,
-                        weight: {
-                          ...formData.weight,
-                          unit: 'kg'
-                        }
-                      })
-                    }
-                  >
-                    <Text>KG</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    className={className('p-2 rounded-lg', {
-                      'bg-white': formData.weight.unit === 'bound'
-                    })}
-                    onPress={() =>
-                      setFormData({
-                        ...formData,
-                        weight: {
-                          ...formData.weight,
-                          unit: 'bound'
-                        }
-                      })
-                    }
-                  >
-                    <Text>Bound</Text>
-                  </TouchableOpacity>
+                <Text className='font-bold text-[20px]'>{t('weight', { ns: 'common' })}</Text>
+                <View className='w-[30px] bg-brand p-1 rounded-lg'>
+                  <Text className='text-center'>KG</Text>
                 </View>
               </View>
               <TextInput
@@ -232,13 +239,15 @@ export default function EditProfile({ navigation }) {
                 value={weightInput}
                 onChangeText={setWeightInput}
               />
-              <Text className='font-bold text-[20px] my-[8px]'>Giới tính</Text>
+              <Text className='font-bold text-[20px] my-[8px]'>
+                {t('gender', { ns: 'common' })}
+              </Text>
               <View style={{ zIndex: 1000 }} className=''>
                 <DropDownPicker
-                  open={open}
+                  open={openGender}
                   value={selectedGender}
                   items={genders}
-                  setOpen={setOpen}
+                  setOpen={setOpenGender}
                   setValue={handleGenderChange}
                   setItems={setGenders}
                   placeholder='Choose Gender'
@@ -258,7 +267,9 @@ export default function EditProfile({ navigation }) {
                   theme='LIGHT'
                 />
               </View>
-              <Text className='font-bold text-[20px] my-[8px]'>Ngày sinh</Text>
+              <Text className='font-bold text-[20px] my-[8px]'>
+                {t('dateOfBirth', { ns: 'common' })}
+              </Text>
               <TouchableOpacity
                 onPress={showDatePickerModal}
                 className='border border-gray-200 rounded-xl p-4'
@@ -275,11 +286,41 @@ export default function EditProfile({ navigation }) {
                   maximumDate={new Date()}
                 />
               )}
+              <Text className='font-bold text-[20px] my-[8px]'>
+                {t('fitnessLevel', { ns: 'common' })}
+              </Text>
+              <View style={{ zIndex: 1000 }} className=''>
+                <DropDownPicker
+                  open={openFitness}
+                  value={selectedFitnessLevel}
+                  items={fitnessLevel}
+                  setOpen={setOpenFitness}
+                  setValue={handleFitnessLevelChange}
+                  setItems={setFitnessLevel}
+                  placeholder='Choose Fitness Level'
+                  style={{
+                    borderColor: '#e5e7eb',
+                    borderRadius: 12,
+                    paddingHorizontal: 16,
+                    paddingVertical: 12
+                  }}
+                  textStyle={{
+                    color: '#000'
+                  }}
+                  dropDownContainerStyle={{
+                    borderColor: '#e5e7eb',
+                    borderRadius: 12
+                  }}
+                  theme='LIGHT'
+                />
+              </View>
               <TouchableOpacity
-                className='bg-primary rounded-full py-4 mt-8'
+                className='bg-brand rounded-full py-4 mt-8'
                 onPress={handleEditProfile}
               >
-                <Text className='text-white font-bold text-3xl text-center'>Lưu</Text>
+                <Text className='text-white font-bold text-3xl text-center'>
+                  {t('save', { ns: 'common' })}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>

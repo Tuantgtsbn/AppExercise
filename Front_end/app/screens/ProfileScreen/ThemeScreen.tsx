@@ -1,17 +1,20 @@
 import { View, Text, Image, Modal, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import classNames from 'classnames';
-const themes = [
-  {
-    label: 'Sáng',
-    value: 'light'
-  },
-  {
-    label: 'Tối',
-    value: 'black'
-  }
-];
+import { useTranslation } from 'react-i18next';
+
 export default function ThemeScreen() {
+  const { t } = useTranslation();
+  const themes = [
+    {
+      label: t('light', { ns: 'settingsScreen' }),
+      value: 'light'
+    },
+    {
+      label: t('dark', { ns: 'settingsScreen' }),
+      value: 'black'
+    }
+  ];
   const [theme, setLanguage] = useState('light');
   const [showModal, setShowModal] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState(null);
@@ -55,10 +58,10 @@ export default function ThemeScreen() {
         <View className='flex-1 justify-center items-center bg-black/50'>
           <View className='bg-white p-6 rounded-2xl w-[80%]'>
             <Text className='text-xl font-semibold text-center mb-4'>
-              Xác nhận thay đổi giao diện
+              {t('themeChange', { ns: 'settingsScreen' })}
             </Text>
             <Text className='text-center mb-6'>
-              Bạn có chắc chắn muốn thay đổi giao diện sang{' '}
+              {t('themeConfirmation', { ns: 'settingsScreen' })}{' '}
               {themes.find(lang => lang.value === selectedTheme)?.label}?
             </Text>
 
@@ -67,11 +70,11 @@ export default function ThemeScreen() {
                 className='px-6 py-3 rounded-full bg-gray-200'
                 onPress={() => setShowModal(false)}
               >
-                <Text className='text-base'>Hủy</Text>
+                <Text className='text-base'>{t('cancel', { ns: 'common' })}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity className='px-6 py-3 rounded-full bg-brand' onPress={handleConfirm}>
-                <Text className='text-base text-white'>Xác nhận</Text>
+                <Text className='text-base text-white'>{t('confirm', { ns: 'common' })}</Text>
               </TouchableOpacity>
             </View>
           </View>

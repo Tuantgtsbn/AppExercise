@@ -1,8 +1,28 @@
 import { View, Text, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Welcome({ navigation }) {
+  useEffect(() => {
+    // Kiểm tra xem người dùng đã từng vào app chưa
+    checkFirstTime();
+  }, []);
+  const checkFirstTime = async () => {
+    try {
+      const isActive = await AsyncStorage.getItem('isActive');
+
+      if (isActive === 'true') {
+        // Nếu đã từng vào app, chuyển thẳng đến màn hình đăng nhập
+        navigation.replace('LoginScreen');
+      } else {
+        // Nếu lần đầu vào app, hiển thị màn hình giới thiệu
+        await AsyncStorage.setItem('isActive', 'true');
+      }
+    } catch (error) {
+      console.error('Lỗi khi kiểm tra trạng thái:', error);
+    }
+  };
   return (
     <View className='flex-1'>
       {/* Khối chữ ở giữa màn hình */}

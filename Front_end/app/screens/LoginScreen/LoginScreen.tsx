@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -44,7 +44,7 @@ const LoginScreen = ({ navigation }) => {
   }, []);
   const onSubmit = async (data: FormData) => {
     try {
-      await dispatch(login(data)).unwrap();
+      await dispatch(login({ ...data, role: 'user' })).unwrap();
       Toast.show({
         type: 'success',
         text1: 'Đăng nhập thành công',
@@ -139,6 +139,7 @@ const LoginScreen = ({ navigation }) => {
           >
             <MaterialIcons name='login' size={24} color='white' />
             <Text className='text-center text-white font-bold text-xl'>Đăng nhập</Text>
+            {loading && <ActivityIndicator size='small' color='white' />}
           </TouchableOpacity>
         </View>
         <View className='flex-row gap-2 justify-center items-center w-80 mt-6'>

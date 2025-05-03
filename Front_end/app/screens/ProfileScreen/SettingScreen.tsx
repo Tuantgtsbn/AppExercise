@@ -3,8 +3,10 @@ import React from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useTranslation } from 'react-i18next';
 
 export default function SettingScreen({ navigation }) {
+  const { t } = useTranslation();
   return (
     <View className='flex-1 px-[30px] bg-white'>
       <View
@@ -28,7 +30,7 @@ export default function SettingScreen({ navigation }) {
         >
           <View className='flex-row gap-2 items-center'>
             <Ionicons name='globe-outline' size={24} color='#92A3FD' />
-            <Text>Ngôn ngữ</Text>
+            <Text>{t('language', { ns: 'settingsScreen' })}</Text>
           </View>
           <MaterialIcons name='navigate-next' size={24} color='black' />
         </TouchableOpacity>
@@ -38,7 +40,7 @@ export default function SettingScreen({ navigation }) {
         >
           <View className='flex-row gap-2 items-center'>
             <Ionicons name='flashlight-outline' size={24} color='#92A3FD' />
-            <Text>Giao diện</Text>
+            <Text>{t('theme', { ns: 'settingsScreen' })}</Text>
           </View>
           <MaterialIcons name='navigate-next' size={24} color='black' />
         </TouchableOpacity>

@@ -61,7 +61,7 @@ const RegisterScreen = ({ navigation }) => {
     try {
       const {
         user: { id }
-      } = await dispatch(signUp(data)).unwrap();
+      } = await dispatch(signUp({ ...data, role: 'user' })).unwrap();
       console.log(id);
       Toast.show({
         type: 'success',
