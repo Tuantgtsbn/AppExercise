@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -20,21 +20,37 @@ import { signUp } from 'redux/AuthSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Toast from 'react-native-toast-message';
 import { RootState } from 'redux/store';
-const schema = yup.object().shape({
-  firstName: yup.string().required('Vui lòng nhập họ').min(2, 'Họ phải có ít nhất 2 ký tự'),
-  lastName: yup.string().required('Vui lòng nhập tên').min(2, 'Tên phải có ít nhất 2 ký tự'),
-  email: yup.string().required('Vui lòng nhập email').email('Email không hợp lệ'),
-  password: yup
-    .string()
-    .required('Vui lòng nhập mật khẩu')
-    .min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
-  confirmPassword: yup
-    .string()
-    .required('Vui lòng xác nhận mật khẩu')
-    .oneOf([yup.ref('password')], 'Mật khẩu không khớp')
-});
-type FormData = yup.InferType<typeof schema>;
+import { useTranslation } from 'react-i18next';
+
 const RegisterScreen = ({ navigation }) => {
+  const { t } = useTranslation();
+  const schema = useMemo(
+    () =>
+      yup.object().shape({
+        firstName: yup
+          .string()
+          .required(t('emtyErrorFirstName', { ns: 'authScreen' }))
+          .min(2, t('shortErrorFirstName', { ns: 'authScreen' })),
+        lastName: yup
+          .string()
+          .required(t('emptyErrorLastName', { ns: 'authScreen' }))
+          .min(2, t('shortErrorLastName', { ns: 'authScreen' })),
+        email: yup
+          .string()
+          .required(t('emptyErrorEmail', { ns: 'authScreen' }))
+          .email(t('invalidEmail', { ns: 'authScreen' })),
+        password: yup
+          .string()
+          .required(t('emptyErrorPassword', { ns: 'authScreen' }))
+          .min(6, t('passwordTooShort', { ns: 'authScreen' })),
+        confirmPassword: yup
+          .string()
+          .required(t('emptyErrorConfirmPassword', { ns: 'authScreen' }))
+          .oneOf([yup.ref('password')], t('passwordsDontMatch', { ns: 'authScreen' }))
+      }),
+    [t]
+  );
+  type FormData = yup.InferType<typeof schema>;
   const dispatch = useDispatch();
   const { loading } = useSelector((state: RootState) => state.auth);
   const [isShowPassword, setIsShowPassword] = useState(false);
@@ -65,8 +81,8 @@ const RegisterScreen = ({ navigation }) => {
       console.log(id);
       Toast.show({
         type: 'success',
-        text1: 'Đăng ký thành công',
-        text2: 'Chào mừng bạn đã đến với chúng tôi'
+        text1: t('signInSuccess', { ns: 'authScreen' }),
+        text2: t('signInSuccessText', { ns: 'authScreen' })
       });
       await new Promise(resolve => setTimeout(resolve, 1000));
       navigation.replace('StackIntroductionScreen', {
@@ -76,8 +92,8 @@ const RegisterScreen = ({ navigation }) => {
     } catch (error) {
       Toast.show({
         type: 'error',
-        text1: 'Đăng ký thất bại',
-        text2: 'Vui lòng kiểm tra lại thông tin đăng ký'
+        text1: t('registerFailed', { ns: 'authScreen' }),
+        text2: t('registerFailedText', { ns: 'authScreen' })
       });
     }
   };
@@ -85,8 +101,10 @@ const RegisterScreen = ({ navigation }) => {
   return (
     <View className='flex-1 justify-between items-center bg-white'>
       <View className='items-center mt-[40px]'>
-        <Text className='text-xl'>Thân mến</Text>
-        <Text className='text-2xl font-bold w-[160px] text-center'>Tạo tài khoản</Text>
+        <Text className='text-xl'>{t('dear', { ns: 'authScreen' })}</Text>
+        <Text className='text-2xl font-bold w-[160px] text-center'>
+          {t('welcomeRegister', { ns: 'authScreen' })}
+        </Text>
         <View className='gap-4 mt-[40px]'>
           <View className='flex-row gap-2 px-2 py-2 bg-[#F7F8F8] rounded-lg w-90 items-center'>
             <AntDesign name='user' size={24} color='black' />
@@ -206,9 +224,7 @@ const RegisterScreen = ({ navigation }) => {
           )}
         </View>
         <View className='mt-4'>
-          <Text className='text-center w-80'>
-            Bạn sẽ phải chấp nhận điều khoản và chính sách của chúng tôi
-          </Text>
+          <Text className='text-center w-80'>{t('acceptPolicy', { ns: 'authScreen' })}</Text>
         </View>
       </View>
 
@@ -219,13 +235,15 @@ const RegisterScreen = ({ navigation }) => {
             onPress={handleSubmit(onSubmit)}
           >
             <MaterialIcons name='login' size={24} color='white' />
-            <Text className='text-center text-white font-bold text-xl'>Đăng ký</Text>
+            <Text className='text-center text-white font-bold text-xl'>
+              {t('signUp', { ns: 'authScreen' })}
+            </Text>
             {loading && <ActivityIndicator size='small' color='white' />}
           </TouchableOpacity>
         </View>
         <View className='flex-row gap-2 justify-center items-center w-80 mt-6'>
           <View className='flex-1 h-[1px] bg-gray-400'></View>
-          <Text className=''>Hoặc</Text>
+          <Text className=''>{t('orContinueWith', { ns: 'authScreen' })}</Text>
           <View className='flex-1 h-[1px] bg-gray-400'></View>
         </View>
         <View className='mt-4'>
@@ -244,9 +262,11 @@ const RegisterScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View className='mt-4 flex-row gap-2 justify-center items-center'>
-            <Text className='text-center'>Bạn đã có tài khoản ?</Text>
+            <Text className='text-center'>{t('alreadyHaveAccount', { ns: 'authScreen' })}</Text>
             <TouchableOpacity className='' onPress={handleNavigateLogin}>
-              <Text className='text-center underline text-brand'>Đăng nhập ngay</Text>
+              <Text className='text-center underline text-brand'>
+                {t('signIn', { ns: 'authScreen' })}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

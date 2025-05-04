@@ -11,15 +11,22 @@ import * as yup from 'yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Toast from 'react-native-toast-message';
-const schema = yup.object().shape({
-  email: yup.string().required('Vui lòng nhập email').email('Email không hợp lệ'),
-  password: yup
-    .string()
-    .required('Vui lòng nhập mật khẩu')
-    .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
-});
-type FormData = yup.InferType<typeof schema>;
+import { useTranslation } from 'react-i18next';
+
 const LoginScreen = ({ navigation }) => {
+  const { t } = useTranslation();
+  const schema = yup.object().shape({
+    email: yup
+      .string()
+      .required(t('emptyErrorEmail', { ns: 'authScreen' }))
+      .email(t('invalidEmail', { ns: 'authScreen' })),
+    password: yup
+      .string()
+      .required(t('emptyErrorPassword', { ns: 'authScreen' }))
+      .min(6, t('passwordTooShort', { ns: 'authScreen' }))
+  });
+  type FormData = yup.InferType<typeof schema>;
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isShowPassword, setIsShowPassword] = useState(false);
@@ -47,16 +54,16 @@ const LoginScreen = ({ navigation }) => {
       await dispatch(login({ ...data, role: 'user' })).unwrap();
       Toast.show({
         type: 'success',
-        text1: 'Đăng nhập thành công',
-        text2: 'Chào mừng bạn đã quay lại'
+        text1: t('signInSuccess', { ns: 'authScreen' }),
+        text2: t('signInSuccessText', { ns: 'authScreen' })
       });
       await new Promise(resolve => setTimeout(resolve, 1000));
       navigation.replace('MainApp', { screen: 'HomeScreenTab' });
     } catch (error) {
       Toast.show({
         type: 'error',
-        text1: 'Đăng nhập thất bại',
-        text2: 'Vui lòng kiểm tra lại thông tin đăng nhập'
+        text1: t('signInFailed', { ns: 'authScreen' }),
+        text2: t('signInFailedText', { ns: 'authScreen' })
       });
     }
   };
@@ -68,8 +75,10 @@ const LoginScreen = ({ navigation }) => {
   return (
     <View className='flex-1 justify-between items-center bg-white'>
       <View className='items-center mt-[40px]'>
-        <Text className='text-xl'>Thân mến</Text>
-        <Text className='text-2xl font-bold w-[160px] text-center'>Chào mừng bạn đã quay lại</Text>
+        <Text className='text-xl'>{t('dear', { ns: 'authScreen' })}</Text>
+        <Text className='text-2xl font-bold w-[160px] text-center'>
+          {t('welcomelogin', { ns: 'authScreen' })}
+        </Text>
         <View className='gap-4 mt-[40px]'>
           <View className='flex-row gap-2 px-2 py-2 bg-[#F7F8F8] rounded-lg w-90 items-center'>
             <Fontisto name='email' size={24} color='black' />
@@ -127,7 +136,7 @@ const LoginScreen = ({ navigation }) => {
           )}
         </View>
         <View className='mt-4'>
-          <Text className='text-center underline'>Quên mật khẩu ?</Text>
+          <Text className='text-center underline'>{t('forgotPassword', { ns: 'authScreen' })}</Text>
         </View>
       </View>
 
@@ -138,13 +147,15 @@ const LoginScreen = ({ navigation }) => {
             onPress={handleSubmit(onSubmit)}
           >
             <MaterialIcons name='login' size={24} color='white' />
-            <Text className='text-center text-white font-bold text-xl'>Đăng nhập</Text>
+            <Text className='text-center text-white font-bold text-xl'>
+              {t('signIn', { ns: 'authScreen' })}
+            </Text>
             {loading && <ActivityIndicator size='small' color='white' />}
           </TouchableOpacity>
         </View>
         <View className='flex-row gap-2 justify-center items-center w-80 mt-6'>
           <View className='flex-1 h-[1px] bg-gray-400'></View>
-          <Text className=''>Hoặc</Text>
+          <Text className=''>{t('orContinueWith', { ns: 'authScreen' })}</Text>
           <View className='flex-1 h-[1px] bg-gray-400'></View>
         </View>
         <View className='mt-4'>
@@ -163,9 +174,11 @@ const LoginScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View className='mt-4 flex-row gap-2 justify-center items-center'>
-            <Text className='text-center'>Bạn chưa có tài khoản ?</Text>
+            <Text className='text-center'>{t('dontHaveAccount', { ns: 'authScreen' })}</Text>
             <TouchableOpacity className='' onPress={handleRegister}>
-              <Text className='text-center underline text-brand'>Đăng ký ngay</Text>
+              <Text className='text-center underline text-brand'>
+                {t('signUp', { ns: 'authScreen' })}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -20,11 +20,21 @@
       "supportsTablet": true
     },
     "android": {
+      "permissions": [
+        "android.permission.health.READ_STEPS",
+        "android.permission.health.WRITE_STEPS",
+        "android.permission.health.READ_WEIGHT",
+        "android.permission.health.WRITE_WEIGHT",
+        "android.permission.health.READ_HEIGHT",
+        "android.permission.health.WRITE_HEIGHT",
+        "android.permission.RECORD_AUDIO"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.exercise"
+      "package": "com.exercise.app",
+      "versionCode": 1
     },
     "web": {
       "bundler": "metro",
@@ -48,11 +58,29 @@
           "photosPermission": "Application needs permission to access your photos to select an image"
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      "expo-health-connect",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 31,
+            "targetSdkVersion": 31,
+            "minSdkVersion": 26,
+            "buildToolsVersion": "31.0.0",
+            "kotlinVersion": "1.8.10"
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
       "tsconfigPaths": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "40803563-1fe8-4f40-88f4-d8a2257802ca"
+      }
     }
   }
 }

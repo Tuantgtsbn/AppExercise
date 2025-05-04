@@ -1,11 +1,71 @@
 import React from 'react';
-import { View, Text, ScrollView, Image, Button, TouchableOpacity, StyleSheet } from 'react-native';
-import HealthMetricSection from '../HealthOverviewScreen/components/HealthMetric';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+  Platform,
+  Image
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Header from '../HealthOverviewScreen/components/Header';
+import useHealthConnect from '@/hooks/useHealthConnect';
 
 const HealthMetricScreen = () => {
   const navigation = useNavigation() as any;
+  const { healthData, loading, error, refreshData } = useHealthConnect();
+
+  const renderHealthConnectData = () => {
+    if (Platform.OS !== 'android') {
+      return null;
+    }
+
+    return (
+      <View style={styles.healthConnectContainer}>
+        <View style={styles.headerRow}>
+          <Text style={styles.sectionTitle}>Dữ liệu từ Health Connect</Text>
+          <TouchableOpacity onPress={refreshData}>
+            <Text style={styles.refreshText}>Làm mới</Text>
+          </TouchableOpacity>
+        </View>
+
+        {loading ? (
+          <ActivityIndicator size='small' color='#97B8FE' />
+        ) : error ? (
+          <Text style={styles.errorText}>{error}</Text>
+        ) : healthData ? (
+          <View style={styles.dataContainer}>
+            {healthData.weight && healthData.weight.length > 0 && (
+              <View style={styles.dataItem}>
+                <Text style={styles.dataLabel}>Cân nặng gần nhất:</Text>
+                <Text style={styles.dataValue}>{healthData.weight[0].weight.toFixed(1)} kg</Text>
+              </View>
+            )}
+
+            {healthData.height && healthData.height.length > 0 && (
+              <View style={styles.dataItem}>
+                <Text style={styles.dataLabel}>Chiều cao gần nhất:</Text>
+                <Text style={styles.dataValue}>{healthData.height[0].height.toFixed(1)} cm</Text>
+              </View>
+            )}
+
+            {healthData.steps && healthData.steps.length > 0 && (
+              <View style={styles.dataItem}>
+                <Text style={styles.dataLabel}>Tổng số bước chân (30 ngày):</Text>
+                <Text style={styles.dataValue}>
+                  {healthData.steps.reduce((total, record) => total + record.count, 0)}
+                </Text>
+              </View>
+            )}
+          </View>
+        ) : (
+          <Text style={styles.noDataText}>Chưa có dữ liệu từ Health Connect</Text>
+        )}
+      </View>
+    );
+  };
 
   return (
     <ScrollView
@@ -16,8 +76,12 @@ const HealthMetricScreen = () => {
         paddingTop: 10
       }}
     >
-      // Header
+      {/* Header */}
       <Header title={'Chỉ số sức khỏe'} />
+
+      {/* Health Connect Data */}
+      {renderHealthConnectData()}
+
       <View
         style={{
           width: '100%',
@@ -179,5 +243,55 @@ const HealthMetricScreen = () => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  healthConnectContainer: {
+    backgroundColor: 'rgba(152, 186, 234, 0.2)',
+    borderRadius: 20,
+    padding: 16,
+    marginTop: 20
+  },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#1D1617'
+  },
+  refreshText: {
+    fontSize: 12,
+    color: '#97B8FE'
+  },
+  dataContainer: {
+    gap: 8
+  },
+  dataItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  dataLabel: {
+    fontSize: 14,
+    color: '#7B6F72'
+  },
+  dataValue: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#1D1617'
+  },
+  errorText: {
+    color: '#FF0000',
+    fontSize: 14
+  },
+  noDataText: {
+    color: '#7B6F72',
+    fontSize: 14,
+    fontStyle: 'italic'
+  }
+});
 
 export default HealthMetricScreen;

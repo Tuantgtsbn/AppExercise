@@ -187,7 +187,27 @@ export default {
     orContinueWith: 'Or continue with',
     google: 'Google',
     facebook: 'Facebook',
-    apple: 'Apple'
+    apple: 'Apple',
+    emtyErrorEmail: 'Please enter your email',
+    invalidEmail: 'Invalid email address',
+    emtyErrorPassword: 'Please enter your password',
+    passwordTooShort: 'Password must be at least 6 characters',
+    emtyErrorConfirmPassword: 'Please confirm your password',
+    passwordsDontMatch: "Passwords don't match",
+    signInSuccess: 'Login successfully',
+    signInSuccessText: 'Welcome back',
+    signInFailed: 'Login failed',
+    signInFailedText: 'Please check your email or password',
+    registerSuccess: 'Register successfully',
+    registerFailed: 'Register failed',
+    dear: 'Dear',
+    welcomelogin: 'Welcome back',
+    welcomeRegister: 'Create an account',
+    emptyErrorFirstName: 'Please enter your first name',
+    emptyErrorLastName: 'Please enter your last name',
+    shortErrorFirstName: 'First name must be at least 2 characters',
+    shortErrorLastName: 'Last name must be at least 2 characters',
+    acceptPolicy: 'I have read and agree to the terms and conditions'
   },
 
   // Thông báo lỗi

@@ -1,17 +1,10 @@
 import React from 'react';
-import { View, Text, ScrollView, Image, Button, TouchableOpacity, StyleSheet } from 'react-native';
-
+import { View, ScrollView, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import HealthMetricSection from './components/HealthMetric';
 import Header from './components/Header';
-import HealthMetric from './components/HealthMetric';
-const healthData = [
-  { label: 'Chiều cao', value: '180cm' },
-  { label: 'Cân nặng', value: '75kg' },
-  { label: 'Tuổi', value: '22' },
-  { label: 'LBM', value: '55kg' },
-  { label: 'Abs', value: '8%' }
-];
-const HealthOverviewScreen = ({ navigation }: { navigation: any }) => {
+import HealthConnectIntegration from './components/HealthConnectIntegration';
+
+const HealthOverviewScreen = ({ navigation }) => {
   return (
     <ScrollView
       style={{
@@ -24,54 +17,12 @@ const HealthOverviewScreen = ({ navigation }: { navigation: any }) => {
       {/* Header */}
       <Header title='Tổng quan sức khỏe' />
 
-      {/* Health Metric */}
-      <View
-        style={{
-          marginTop: 16
-        }}
-      >
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}
-        >
-          <Text
-            style={{
-              color: '#1D1617',
-              fontSize: 16,
-              fontWeight: 'bold',
-              lineHeight: 26
-            }}
-          >
-            Chỉ số sức khỏe
-          </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('HealthMetricScreen')}>
-            <Text
-              style={{
-                color: '#ADA4A5',
-                fontSize: 12,
-                fontWeight: 'medium'
-              }}
-            >
-              Xem thêm
-            </Text>
-          </TouchableOpacity>
-        </View>
+      {/* Health Connect Integration */}
+      <HealthConnectIntegration />
 
-        <View
-          style={{
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            gap: 15,
-            marginTop: 2
-          }}
-        >
-          {healthData.map((item, index) => (
-            <HealthMetric key={index} item={item} />
-          ))}
-        </View>
+      {/* Health Metric */}
+      <View style={{ marginTop: 16 }}>
+        <HealthMetricSection navigation={navigation} />
       </View>
       {/* Tracker */}
       <View
