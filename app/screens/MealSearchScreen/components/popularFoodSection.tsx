@@ -1,4 +1,7 @@
+import { useNavigation } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { Image, Text, View } from 'react-native';
+import translateToVN from '../utils/translateToVN';
 
 const POPULAR_FOODS = [
   {
@@ -31,12 +34,33 @@ const POPULAR_FOODS = [
 ];
 
 const PopularFoodSection = () => {
+  const navigation = useNavigation() as any;
+
+  const [popularFoods, setPopularFoods] = useState([]);
+
+  useEffect(() => {
+    const fetchNewFoodsData = async () => {
+      try {
+        const response = await fetch(`http://${process.env.BACKEND_HOST}/api/foods/popular`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch foods');
+        }
+        const data = await response.json();
+        setPopularFoods(data);
+      } catch (error) {
+        console.error('Error fetching new foods:', error);
+      }
+    };
+
+    fetchNewFoodsData();
+  }, []);
+
   return (
     <View style={{ gap: 10, paddingBottom: 60 }}>
       <Text style={{ color: '#1D1617', fontSize: 16, fontWeight: 'bold' }}>Phổ biến</Text>
 
       <View style={{ gap: 15 }}>
-        {POPULAR_FOODS.map((item, index) => (
+        {popularFoods.map((item: any, index) => (
           <View
             key={index}
             style={{
@@ -59,7 +83,7 @@ const PopularFoodSection = () => {
               <Text style={{ color: '#1D1617', fontSize: 14 }}>{item.name}</Text>
               <Text
                 style={{ color: '#7B6F72', fontSize: 12, fontWeight: 'semibold' }}
-              >{`${item.level} | ${item.cookDuration} | ${item.calories} kcal`}</Text>
+              >{`${translateToVN(item.level)} | ${item.cookingTime} phút | ${item.kcal} kcal`}</Text>
             </View>
 
             <Image source={require('../../../../assets/images/arrow-circle.png')} />

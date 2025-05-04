@@ -1,7 +1,53 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
 import MealDropdown from '../components/mealDropdow';
+import { GroupedFoods, MealSchedule } from '@/screens/MealScheduleScreen/utils/interface';
+import { useEffect, useMemo, useState } from 'react';
 
 const TodayMealScheduleSection = () => {
+  const [foods, setFoods] = useState<MealSchedule[]>([]);
+  const selectedDate = new Date();
+
+  const groupedFoods = useMemo(() => {
+    const groups: GroupedFoods = {
+      breakfast: [],
+      lunch: [],
+      dinner: []
+    };
+
+    foods.forEach((item: any) => {
+      const hour = new Date(item.mealTime).getHours();
+      if (hour < 10) {
+        groups.breakfast.push(item);
+      } else if (hour < 15) {
+        groups.lunch.push(item);
+      } else {
+        groups.dinner.push(item);
+      }
+    });
+
+    return groups;
+  }, [foods]);
+
+  useEffect(() => {
+    const fetchMealScheduleForDayData = async () => {
+      try {
+        const dateString = selectedDate.toISOString().split('T')[0];
+        const response = await fetch(
+          `http://${process.env.BACKEND_HOST}/api/meal-schedule/foods?date=${dateString}`
+        );
+
+        if (!response.ok) throw new Error('Failed to fetch meal schedules');
+        const data: MealSchedule[] = await response.json();
+
+        setFoods(data);
+      } catch (error) {
+        console.error('Error fetching schedules for selected date:', error);
+      }
+    };
+
+    fetchMealScheduleForDayData();
+  }, []);
+
   return (
     <View style={{ marginTop: 10 }}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>

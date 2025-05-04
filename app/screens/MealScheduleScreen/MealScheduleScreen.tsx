@@ -2,229 +2,48 @@ import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'rea
 import Header from '../HealthOverviewScreen/components/Header';
 import { useNavigation } from 'expo-router';
 import MealDateSelector from './components/MealDateSelector';
+import { useEffect, useMemo, useState } from 'react';
+import MealScheduleForDay from './components/MealScheduleForDay';
+import MealScheduleForDaySection from './components/MealScheduleForDay';
+import TotalNutritionSection from './components/TotalNutritionSection';
+import { GroupedFoods, MealSchedule } from './utils/interface';
 
 const MealScheduleScreen = () => {
   const navigation = useNavigation() as any;
 
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [foods, setFoods] = useState<MealSchedule[]>([]);
+
+  useEffect(() => {
+    const fetchMealScheduleForDayData = async () => {
+      try {
+        const dateString = selectedDate.toISOString().split('T')[0];
+        const response = await fetch(
+          `http://${process.env.BACKEND_HOST}/api/meal-schedule/foods?date=${dateString}`
+        );
+
+        if (!response.ok) throw new Error('Failed to fetch meal schedules');
+        const data: MealSchedule[] = await response.json();
+
+        setFoods(data);
+      } catch (error) {
+        console.error('Error fetching schedules for selected date:', error);
+      }
+    };
+
+    fetchMealScheduleForDayData();
+  }, [selectedDate]);
+
   return (
-    <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+    <View style={{ flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 20 }}>
       <Header title='Lịch ăn uống' />
 
       <ScrollView style={styles.container}>
-        <MealDateSelector />
+        <MealDateSelector selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
 
-        <View style={{ gap: 20 }}>
-          <View style={{ gap: 15 }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between'
-              }}
-            >
-              <Text style={{ color: '#1D1617', fontSize: 16, fontWeight: 'bold' }}>Bữa sáng</Text>
-              <Text style={{ color: '#ADA4A5', fontSize: 12 }}>2 món | 230 calories</Text>
-            </View>
+        <MealScheduleForDaySection selectedDate={selectedDate} foods={foods} />
 
-            <View style={{ gap: 10 }}>
-              <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
-                <Image
-                  style={{
-                    width: 60,
-                    height: 60,
-                    borderRadius: 16
-                  }}
-                  source={{
-                    uri: 'https://firebasestorage.googleapis.com/v0/b/ttch-a46c0.appspot.com/o/image%2Fimages.jpg?alt=media&token=7eba2830-d343-4683-b769-adce17f1219c'
-                  }}
-                  resizeMode='cover'
-                ></Image>
-                <View style={{ flex: 1, gap: 5 }}>
-                  <Text style={{ color: '#1D1617', fontSize: 14 }}>Bánh pancake mật ong</Text>
-                  <Text style={{ color: '#7B6F72', fontSize: 12 }}>07:00 sáng</Text>
-                </View>
-                <Image source={require('../../../assets/images/arrow-right-circle.png')} />
-              </View>
-
-              <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
-                <Image
-                  style={{
-                    width: 60,
-                    height: 60,
-                    borderRadius: 16
-                  }}
-                  source={{
-                    uri: 'https://firebasestorage.googleapis.com/v0/b/ttch-a46c0.appspot.com/o/image%2Fimages.jpg?alt=media&token=7eba2830-d343-4683-b769-adce17f1219c'
-                  }}
-                  resizeMode='cover'
-                ></Image>
-                <View style={{ flex: 1, gap: 5 }}>
-                  <Text style={{ color: '#1D1617', fontSize: 14 }}>Bánh pancake mật ong</Text>
-                  <Text style={{ color: '#7B6F72', fontSize: 12 }}>07:00 sáng</Text>
-                </View>
-                <Image source={require('../../../assets/images/arrow-right-circle.png')} />
-              </View>
-            </View>
-          </View>
-
-          <View style={{ gap: 15 }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between'
-              }}
-            >
-              <Text style={{ color: '#1D1617', fontSize: 16, fontWeight: 'bold' }}>Bữa trưa</Text>
-              <Text style={{ color: '#ADA4A5', fontSize: 12 }}>2 món | 230 calories</Text>
-            </View>
-
-            <View>
-              <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
-                <Image
-                  style={{
-                    width: 60,
-                    height: 60,
-                    borderRadius: 16
-                  }}
-                  source={{
-                    uri: 'https://firebasestorage.googleapis.com/v0/b/ttch-a46c0.appspot.com/o/image%2Fimages.jpg?alt=media&token=7eba2830-d343-4683-b769-adce17f1219c'
-                  }}
-                  resizeMode='cover'
-                ></Image>
-                <View style={{ flex: 1, gap: 5 }}>
-                  <Text style={{ color: '#1D1617', fontSize: 14 }}>Bánh pancake mật ong</Text>
-                  <Text style={{ color: '#7B6F72', fontSize: 12 }}>07:00 sáng</Text>
-                </View>
-                <Image source={require('../../../assets/images/arrow-right-circle.png')} />
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View style={{ gap: 20, marginTop: 30, paddingBottom: 60 }}>
-          <Text style={{ color: '#1D1617', fontSize: 16, fontWeight: 'bold' }}>
-            Dinh dưỡng hôm nay
-          </Text>
-
-          <View style={{ gap: 15 }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                gap: 10,
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingHorizontal: 15,
-                paddingVertical: 25,
-                borderRadius: 15,
-                backgroundColor: '#FFFFFF',
-                elevation: 1
-              }}
-            >
-              <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-                <Text style={{ color: '#1D1617', fontSize: 12, fontWeight: 'bold' }}>Calories</Text>
-
-                <Image
-                  style={{
-                    width: 18,
-                    height: 18
-                  }}
-                  source={require('../../../assets/images/calories-icon.png')}
-                  resizeMode='cover'
-                ></Image>
-              </View>
-
-              <Text style={{ color: '#7B6F72', fontSize: 12 }}>320 kCal</Text>
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                gap: 10,
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingHorizontal: 15,
-                paddingVertical: 25,
-                borderRadius: 15,
-                backgroundColor: '#FFFFFF',
-                elevation: 1
-              }}
-            >
-              <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-                <Text style={{ color: '#1D1617', fontSize: 12, fontWeight: 'bold' }}>Proteins</Text>
-
-                <Image
-                  style={{
-                    width: 18,
-                    height: 18
-                  }}
-                  source={require('../../../assets/images/protein-icon.png')}
-                  resizeMode='cover'
-                ></Image>
-              </View>
-
-              <Text style={{ color: '#7B6F72', fontSize: 12 }}>320 kCal</Text>
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                gap: 10,
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingHorizontal: 15,
-                paddingVertical: 25,
-                borderRadius: 15,
-                backgroundColor: '#FFFFFF',
-                elevation: 1
-              }}
-            >
-              <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-                <Text style={{ color: '#1D1617', fontSize: 12, fontWeight: 'bold' }}>Fat</Text>
-
-                <Image
-                  style={{
-                    width: 18,
-                    height: 18
-                  }}
-                  source={require('../../../assets/images/trans-fat-icon.png')}
-                  resizeMode='cover'
-                ></Image>
-              </View>
-
-              <Text style={{ color: '#7B6F72', fontSize: 12 }}>320 kCal</Text>
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                gap: 10,
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingHorizontal: 15,
-                paddingVertical: 25,
-                borderRadius: 15,
-                backgroundColor: '#FFFFFF',
-                elevation: 1
-              }}
-            >
-              <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-                <Text style={{ color: '#1D1617', fontSize: 12, fontWeight: 'bold' }}>Carbo</Text>
-
-                <Image
-                  style={{
-                    width: 18,
-                    height: 18
-                  }}
-                  source={require('../../../assets/images/rice-icon.png')}
-                  resizeMode='cover'
-                ></Image>
-              </View>
-
-              <Text style={{ color: '#7B6F72', fontSize: 12 }}>320 kCal</Text>
-            </View>
-          </View>
-        </View>
+        <TotalNutritionSection foods={foods} />
       </ScrollView>
 
       <TouchableOpacity
@@ -252,7 +71,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    paddingHorizontal: 30,
     paddingTop: 20
   },
   selectBox: {

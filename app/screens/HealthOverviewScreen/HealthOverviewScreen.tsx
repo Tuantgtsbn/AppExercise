@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 
 import Header from './components/Header';
 import HealthMetricSection from './layouts/HealthMetricSection';
 import WorkoutProgressSection from './layouts/WorkProgressSection';
 import MealPlanSection from './layouts/MealPlanSection';
+import { MealSchedule } from '../MealScheduleScreen/utils/interface';
 
 const HealthOverviewScreen = () => {
   return (

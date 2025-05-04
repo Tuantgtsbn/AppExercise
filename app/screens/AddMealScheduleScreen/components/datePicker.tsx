@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Platform, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Platform, Image } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-const DatePicker: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+interface DatePickerProps {
+  mealTime: Date;
+  handleChange: (name: string, value: any) => void;
+}
+
+const DatePicker: React.FC<DatePickerProps> = props => {
+  const { mealTime, handleChange } = props;
+
+  const [time, setTime] = useState(mealTime);
   const [show, setShow] = useState(false);
 
   const onChange = (event: any, selectedDate?: Date) => {
     if (Platform.OS === 'android') {
-      setShow(false); // 
+      setShow(false); //
     }
 
     if (selectedDate) {
       setTime(selectedDate);
+      handleChange('time', selectedDate);
     }
   };
 

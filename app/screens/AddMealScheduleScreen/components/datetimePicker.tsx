@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
-
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-const TimePicker: React.FC = () => {
-  const [time, setTime] = useState(new Date());
+interface TimePickerProps {
+  mealTime: Date;
+  handleChange: (name: string, value: any) => void;
+}
+
+const TimePicker: React.FC<TimePickerProps> = props => {
+  const { mealTime, handleChange } = props;
+
+  const [time, setTime] = useState(mealTime);
   const [show, setShow] = useState(false);
 
   const onChange = (event: any, selectedDate?: Date) => {
     setShow(Platform.OS === 'ios');
     if (selectedDate) {
       setTime(selectedDate);
+      handleChange('time', selectedDate);
     }
   };
 
@@ -44,8 +51,7 @@ const TimePicker: React.FC = () => {
             justifyContent: 'center'
           }}
         >
-          <Text style={{ color: '#7B6F72', fontSize: 18 }}>{hours}</Text>
-          <Text style={{ color: '#7B6F72', fontSize: 18 }}>{minutes}</Text>
+          <Text style={{ color: '#7B6F72', fontSize: 18 }}>{`${hours} : ${minutes}`}</Text>
           <Text style={{ color: '#7B6F72', fontSize: 18 }}>{ampm}</Text>
         </View>
       </TouchableOpacity>

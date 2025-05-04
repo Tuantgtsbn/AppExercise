@@ -2,9 +2,35 @@ import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'rea
 import { useNavigation } from 'expo-router';
 import DetailNav from '../HealthOverviewScreen/components/DetailNav';
 import { NUTRITIONS } from './utils/constant';
+import { useRoute } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
+import translateToVN from '../MealSearchScreen/utils/translateToVN';
 
 const MealDetailScreen = () => {
   const navigation = useNavigation() as any;
+  const route = useRoute<any>();
+  const { foodId } = route.params;
+
+  const [food, setFood] = useState<any>();
+
+  useEffect(() => {
+    const fetchFoodDetailData = async () => {
+      try {
+        if (!foodId) return;
+
+        const response = await fetch(`http://${process.env.BACKEND_HOST}/api/foods/${foodId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch foods');
+        }
+        const data = await response.json();
+        setFood(data);
+      } catch (error) {
+        console.error('Error fetching new foods:', error);
+      }
+    };
+
+    fetchFoodDetailData();
+  }, [foodId]);
 
   return (
     <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
@@ -34,7 +60,7 @@ const MealDetailScreen = () => {
             height: 390
           }}
           source={{
-            uri: 'https://firebasestorage.googleapis.com/v0/b/ttch-a46c0.appspot.com/o/image%2Fimages.jpg?alt=media&token=7eba2830-d343-4683-b769-adce17f1219c'
+            uri: food?.imageUrl || ''
           }}
           resizeMode='cover'
         ></Image>
@@ -61,9 +87,11 @@ const MealDetailScreen = () => {
           >
             <View style={{ gap: 2 }}>
               <Text style={{ color: '#1D1617', fontSize: 16, fontWeight: 'bold' }}>
-                Cà ri bò Nhật Bản
+                {food?.name || ''}
               </Text>
-              <Text style={{ color: '#98BBFE', fontSize: 12 }}>Dễ | 30 phút</Text>
+              <Text
+                style={{ color: '#98BBFE', fontSize: 12 }}
+              >{`${translateToVN(food?.level || 'Easy')} | ${food?.cookingTime || 0} phút`}</Text>
             </View>
 
             <Image source={require('../../../assets/images/heart-icon.png')} />
@@ -91,7 +119,7 @@ const MealDetailScreen = () => {
                     }}
                   >
                     <Image source={item.icon}></Image>
-                    <Text style={{ color: '#1D1617' }}>{item.value}</Text>
+                    <Text style={{ color: '#1D1617' }}>{`${food?.[item.name]}${item.unit}`}</Text>
                   </View>
                 ))}
               </View>
@@ -103,12 +131,7 @@ const MealDetailScreen = () => {
               Mô tả
             </Text>
 
-            <Text style={{ color: '#7B6F72', fontSize: 12 }}>
-              Cà ri bò Nhật Bản là một món ăn truyền thống của Nhật Bản, được chế biến từ thịt bò,
-              rau củ và nước sốt cà ri. Món ăn này thường được ăn kèm với cơm trắng và có hương vị
-              đậm đà, thơm ngon. Cà ri bò Nhật Bản có thể được chế biến theo nhiều cách khác nhau,
-              tùy thuộc vào sở thích và khẩu vị của từng người.
-            </Text>
+            <Text style={{ color: '#7B6F72', fontSize: 12 }}>{food?.description}</Text>
           </View>
 
           <View>
@@ -124,28 +147,19 @@ const MealDetailScreen = () => {
                 Nguyên liệu bạn sẽ cần
               </Text>
 
-              <Text style={{ color: '#7B6F72', fontSize: 12 }}>6 nguyên liệu</Text>
+              <Text
+                style={{ color: '#7B6F72', fontSize: 12 }}
+              >{`${food?.ingredient.length} nguyên liệu`}</Text>
             </View>
             <View style={{ gap: 2, marginTop: 15 }}>
-              <Text style={{ color: '#7B6F72', fontSize: 12 }}>
-                <Text style={{ color: '#1D1617', fontSize: 14, fontWeight: 'bold' }}>Thịt bò:</Text>{' '}
-                400g, cắt thành miếng vừa ăn
-              </Text>
-
-              <Text style={{ color: '#7B6F72', fontSize: 12 }}>
-                <Text style={{ color: '#1D1617', fontSize: 14, fontWeight: 'bold' }}>Thịt bò:</Text>{' '}
-                400g, cắt thành miếng vừa ăn
-              </Text>
-
-              <Text style={{ color: '#7B6F72', fontSize: 12 }}>
-                <Text style={{ color: '#1D1617', fontSize: 14, fontWeight: 'bold' }}>Thịt bò:</Text>{' '}
-                400g, cắt thành miếng vừa ăn
-              </Text>
-
-              <Text style={{ color: '#7B6F72', fontSize: 12 }}>
-                <Text style={{ color: '#1D1617', fontSize: 14, fontWeight: 'bold' }}>Thịt bò:</Text>{' '}
-                400g, cắt thành miếng vừa ăn
-              </Text>
+              {food?.ingredient?.map((item: any, index: any) => (
+                <Text style={{ color: '#7B6F72', fontSize: 12 }}>
+                  <Text style={{ color: '#1D1617', fontSize: 14, fontWeight: 'bold' }}>
+                    {`${item.name}:`}
+                  </Text>
+                  {` ${item?.quantity || ''}`}
+                </Text>
+              ))}
             </View>
           </View>
 
@@ -160,105 +174,56 @@ const MealDetailScreen = () => {
             >
               <Text style={{ color: '#1D1617', fontSize: 16, fontWeight: 'bold' }}>Cách làm</Text>
 
-              <Text style={{ color: '#7B6F72', fontSize: 12 }}>8 bước</Text>
+              <Text
+                style={{ color: '#7B6F72', fontSize: 12 }}
+              >{`${food?.recipe.length || 0} bước`}</Text>
             </View>
 
             <View style={{ gap: 5, marginTop: 15 }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  gap: 15,
-                  alignItems: 'flex-start',
-                  borderCurve: 'circular'
-                }}
-              >
-                <Text style={{ color: '#C58BF2', fontSize: 14, fontWeight: 'semibold' }}>01</Text>
+              {food?.recipe?.map((item: any, index: number) => (
                 <View
                   style={{
-                    position: 'relative',
-                    gap: 5,
-                    paddingLeft: 20,
-                    paddingBottom: 30,
-                    borderLeftWidth: 2,
-                    borderLeftColor: 'gray',
-                    borderStyle: 'dashed',
-                    borderColor: '#C58BF2'
+                    flexDirection: 'row',
+                    gap: 15,
+                    alignItems: 'flex-start',
+                    borderCurve: 'circular'
                   }}
                 >
-                  <Image
-                    source={require('../../../assets/images/circle-icon.png')}
-                    style={{ position: 'absolute', left: -11 }}
-                  />
-                  <Text style={{ color: '#1D1617', fontSize: 14, fontWeight: 'bold' }}>Bước 1</Text>
-                  <Text style={{ color: '#7B6F72', fontSize: 12, fontWeight: 'bold' }}>
-                    Chuẩn bị tất cả các nguyên liệu cần thiết
+                  <Text style={{ color: '#C58BF2', fontSize: 14, fontWeight: 'semibold' }}>
+                    {(index + 1).toString().padStart(2, '0')}
                   </Text>
+                  <View
+                    style={{
+                      position: 'relative',
+                      gap: 5,
+                      paddingLeft: 20,
+                      paddingBottom: 30,
+                      borderLeftWidth: 2,
+                      borderLeftColor: 'gray',
+                      borderStyle: 'dashed',
+                      borderColor: '#C58BF2'
+                    }}
+                  >
+                    <Image
+                      source={require('../../../assets/images/circle-icon.png')}
+                      style={{ position: 'absolute', left: -11 }}
+                    />
+                    <Text style={{ color: '#1D1617', fontSize: 14, fontWeight: 'bold' }}>
+                      {`Bước ${index + 1}`}
+                    </Text>
+                    <Text
+                      style={{
+                        color: '#7B6F72',
+                        paddingRight: 30,
+                        fontSize: 12,
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      {item}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  gap: 15,
-                  alignItems: 'flex-start',
-                  borderCurve: 'circular'
-                }}
-              >
-                <Text style={{ color: '#C58BF2', fontSize: 14, fontWeight: 'semibold' }}>02</Text>
-                <View
-                  style={{
-                    position: 'relative',
-                    gap: 5,
-                    paddingLeft: 20,
-                    paddingBottom: 30,
-                    borderLeftWidth: 2,
-                    borderLeftColor: 'gray',
-                    borderStyle: 'dashed',
-                    borderColor: '#C58BF2'
-                  }}
-                >
-                  <Image
-                    source={require('../../../assets/images/circle-icon.png')}
-                    style={{ position: 'absolute', left: -11 }}
-                  />
-                  <Text style={{ color: '#1D1617', fontSize: 14, fontWeight: 'bold' }}>Bước 1</Text>
-                  <Text style={{ color: '#7B6F72', fontSize: 12, fontWeight: 'bold' }}>
-                    Chuẩn bị tất cả các nguyên liệu cần thiết
-                  </Text>
-                </View>
-              </View>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  gap: 15,
-                  alignItems: 'flex-start',
-                  borderCurve: 'circular'
-                }}
-              >
-                <Text style={{ color: '#C58BF2', fontSize: 14, fontWeight: 'semibold' }}>03</Text>
-                <View
-                  style={{
-                    position: 'relative',
-                    gap: 5,
-                    paddingLeft: 20,
-                    paddingBottom: 30,
-                    borderLeftWidth: 2,
-                    borderLeftColor: 'gray',
-                    borderStyle: 'dashed',
-                    borderColor: '#C58BF2'
-                  }}
-                >
-                  <Image
-                    source={require('../../../assets/images/circle-icon.png')}
-                    style={{ position: 'absolute', left: -11 }}
-                  />
-                  <Text style={{ color: '#1D1617', fontSize: 14, fontWeight: 'bold' }}>Bước 1</Text>
-                  <Text style={{ color: '#7B6F72', fontSize: 12, fontWeight: 'bold' }}>
-                    Chuẩn bị tất cả các nguyên liệu cần thiết
-                  </Text>
-                </View>
-              </View>
+              ))}
             </View>
           </View>
         </View>
@@ -284,7 +249,9 @@ const MealDetailScreen = () => {
             borderRadius: 50,
             backgroundColor: '#98B9FE'
           }}
-          onPress={() => navigation.navigate('AddMealSchedule')}
+          onPress={() =>
+            navigation.navigate('AddMealSchedule', { foodId: food.id, foodName: food.name })
+          }
         >
           <Text style={{ color: '#ffffff', fontSize: 16, fontWeight: 'bold' }}>Thêm vào lịch</Text>
         </TouchableOpacity>

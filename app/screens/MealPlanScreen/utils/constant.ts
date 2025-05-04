@@ -24,3 +24,11 @@ export const NUTRITIONS = [
     icon: require('../../../../assets/images/rice-icon.png')
   }
 ];
+
+export const TIME_OPTIONS = [
+  {
+    name: 'Tuần ',
+    value: 'week'
+  },
+  { name: 'Tháng', value: 'month' }
+];

@@ -1,172 +1,100 @@
+import { GroupedFoods, MealSchedule } from '@/screens/MealScheduleScreen/utils/interface';
 import { useNavigation } from 'expo-router';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { useEffect, useMemo, useState } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import MealPlanCard from '../components/MealPlanCard';
 
 const MealPlanSection = () => {
   const navigation = useNavigation() as any;
+  const [foods, setFoods] = useState<MealSchedule[]>([]);
+  const selectedDate = new Date();
+
+  const groupedFoods = useMemo(() => {
+    const groups: GroupedFoods = {
+      breakfast: [],
+      lunch: [],
+      dinner: []
+    };
+
+    foods.forEach((item: any) => {
+      const hour = new Date(item.mealTime).getHours();
+      if (hour < 10) {
+        groups.breakfast.push(item);
+      } else if (hour < 15) {
+        groups.lunch.push(item);
+      } else {
+        groups.dinner.push(item);
+      }
+    });
+
+    return groups;
+  }, [foods]);
+
+  useEffect(() => {
+    const fetchMealScheduleForDayData = async () => {
+      try {
+        const dateString = selectedDate.toISOString().split('T')[0];
+        const response = await fetch(
+          `http://${process.env.BACKEND_HOST}/api/meal-schedule/foods?date=${dateString}`
+        );
+        if (!response.ok) throw new Error('Failed to fetch meal schedules');
+        const data: MealSchedule[] = await response.json();
+        setFoods(data);
+      } catch (error) {
+        console.error('Error fetching schedules for selected date:', error);
+      }
+    };
+
+    fetchMealScheduleForDayData();
+  }, []);
+
   return (
-    <View
-      style={{
-        width: '100%',
-        marginTop: 10
-      }}
-    >
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}
-      >
-        <Text
-          style={{
-            color: '#1D1617',
-            fontSize: 16,
-            fontWeight: 'bold',
-            lineHeight: 26
-          }}
-        >
-          Kế hoạch bữa ăn
-        </Text>
+    <View style={styles.container}>
+      <View style={styles.headerRow}>
+        <Text style={styles.title}>Kế hoạch bữa ăn</Text>
         <TouchableOpacity onPress={() => navigation.navigate('MealPlan')}>
-          <Text
-            style={{
-              color: '#ADA4A5',
-              fontSize: 12,
-              fontWeight: 'medium'
-            }}
-          >
-            Xem thêm
-          </Text>
+          <Text style={styles.link}>Xem thêm</Text>
         </TouchableOpacity>
       </View>
 
-      <View
-        style={{
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: 10,
-          marginTop: 6
-        }}
-      >
-        <View
-          style={{
-            width: '100%',
-            height: 63,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            backgroundColor: 'rgba(151, 184, 254, 0.2)',
-            paddingLeft: 20,
-            paddingRight: 20,
-            borderTopLeftRadius: 40,
-            borderTopRightRadius: 100,
-            borderBottomLeftRadius: 40,
-            borderBottomRightRadius: 22
-          }}
-        >
-          <View>
-            <Text
-              style={{
-                color: '#1D1617',
-                fontSize: 14,
-                fontWeight: 'semibold'
-              }}
-            >
-              Bữa sáng
-            </Text>
-            <Text
-              style={{
-                color: '#7B6F72',
-                fontSize: 12
-              }}
-            >
-              2 món | 320kcal
-            </Text>
-          </View>
+      <View style={styles.mealList}>
+        <MealPlanCard title='Bữa sáng' icon='breakfast' foods={groupedFoods.breakfast} />
 
-          <Image style={{}} source={require('../../../../assets/images/cake.png')} />
-        </View>
+        <MealPlanCard title='Bữa trưa' icon='lunch' foods={groupedFoods.lunch} />
 
-        <View
-          style={{
-            width: '100%',
-            height: 63,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            backgroundColor: 'rgba(197, 139, 242, 0.2)',
-            paddingLeft: 20,
-            paddingRight: 20,
-            borderTopLeftRadius: 40,
-            borderTopRightRadius: 100,
-            borderBottomLeftRadius: 40,
-            borderBottomRightRadius: 22
-          }}
-        >
-          <View>
-            <Text
-              style={{
-                color: '#1D1617',
-                fontSize: 14,
-                fontWeight: 'semibold'
-              }}
-            >
-              Bữa trưa
-            </Text>
-            <Text
-              style={{
-                color: '#7B6F72',
-                fontSize: 12
-              }}
-            >
-              2 món | 320kcal
-            </Text>
-          </View>
-
-          <Image style={{}} source={require('../../../../assets/images/bread.png')} />
-        </View>
-
-        <View
-          style={{
-            width: '100%',
-            height: 63,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            backgroundColor: 'rgba(189, 164, 248, 0.2)',
-            paddingLeft: 20,
-            paddingRight: 20,
-            borderTopLeftRadius: 40,
-            borderTopRightRadius: 100,
-            borderBottomLeftRadius: 40,
-            borderBottomRightRadius: 22
-          }}
-        >
-          <View>
-            <Text
-              style={{
-                color: '#1D1617',
-                fontSize: 14,
-                fontWeight: 'semibold'
-              }}
-            >
-              Bữa tối
-            </Text>
-            <Text
-              style={{
-                color: '#7B6F72',
-                fontSize: 12
-              }}
-            >
-              2 món | 320kcal
-            </Text>
-          </View>
-
-          <Image style={{}} source={require('../../../../assets/images/oatmeal.png')} />
-        </View>
+        <MealPlanCard title='Bữa tối' icon='dinner' foods={groupedFoods.dinner} />
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    marginTop: 10
+  },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  title: {
+    color: '#1D1617',
+    fontSize: 16,
+    fontWeight: 'bold',
+    lineHeight: 26
+  },
+  link: {
+    color: '#ADA4A5',
+    fontSize: 12,
+    fontWeight: '500'
+  },
+  mealList: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 10,
+    marginTop: 6
+  }
+});
 
 export default MealPlanSection;

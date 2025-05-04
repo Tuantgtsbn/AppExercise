@@ -1,32 +1,18 @@
 import { addDays, format, isSameDay } from 'date-fns';
 import { vi } from 'date-fns/locale/vi';
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { DayItem } from '../utils/interface';
+import getCenteredWeekDays from '../utils/getCenteredWeekDates';
 
-type DayItem = {
-  dayLabel: string;
-  dateLabel: string;
-  fullDate: Date;
-};
+interface MealDateSelectorProps {
+  selectedDate: any;
+  setSelectedDate: React.Dispatch<SetStateAction<any>>;
+}
 
-const getCenteredWeekDays = (centerDate = new Date()): DayItem[] => {
-  const days: DayItem[] = [];
-
-  for (let i = -2; i <= 4; i++) {
-    const day = addDays(centerDate, i);
-    days.push({
-      dayLabel: format(day, 'EEE', { locale: vi }),
-      dateLabel: format(day, 'd'),
-      fullDate: day
-    });
-  }
-
-  return days;
-};
-
-const MealDateSelector = () => {
+const MealDateSelector: React.FC<MealDateSelectorProps> = props => {
+  const { selectedDate, setSelectedDate } = props;
   const [days, setDays] = useState<DayItem[]>(getCenteredWeekDays(new Date()));
-  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleSelectDate = (date: any) => {
     setSelectedDate(date);

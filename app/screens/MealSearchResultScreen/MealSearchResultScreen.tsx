@@ -1,11 +1,20 @@
-import { Image, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import Header from '../HealthOverviewScreen/components/Header';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SearchResultFoods from './components/searchResultFoods';
 import FoodCategoryCard from '../MealSearchScreen/components/foodCategoryCard';
+import { useRoute } from '@react-navigation/native';
 
 const MealSearchResultScreen = () => {
-  const [text, setText] = useState('');
+  const route = useRoute<any>();
+  const { keyword } = route.params;
+
+  const [text, setText] = useState(keyword);
+  const [search, setSearch] = useState(keyword);
+
+  const handleSearch = () => {
+    setSearch(text);
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -25,7 +34,9 @@ const MealSearchResultScreen = () => {
             backgroundColor: '#FFFFFF'
           }}
         >
-          <Image source={require('../../../assets/images/search-icon.png')} />
+          <TouchableOpacity onPress={handleSearch}>
+            <Image source={require('../../../assets/images/search-icon.png')} />
+          </TouchableOpacity>
           <TextInput
             placeholder='Tìm kiếm'
             value={text}
@@ -36,7 +47,7 @@ const MealSearchResultScreen = () => {
 
         <FoodCategoryCard />
 
-        <SearchResultFoods />
+        <SearchResultFoods keyword={search} />
       </View>
     </ScrollView>
   );

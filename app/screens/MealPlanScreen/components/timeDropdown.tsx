@@ -1,21 +1,20 @@
 import { useState } from 'react';
 import { Button, Image, Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { TIME_OPTIONS } from '../utils/constant';
 
-const TIME_OPTIONS = [
-  {
-    name: 'Tuần ',
-    value: 'WEEK'
-  },
-  { name: 'Tháng', value: 'MONTH' }
-];
+interface TimeDropdownProps {
+  duration: any;
+  setDuration: React.Dispatch<React.SetStateAction<any>>;
+}
 
-const TimeDropdown = () => {
+const TimeDropdown: React.FC<TimeDropdownProps> = props => {
+  const { duration, setDuration } = props;
+
   const [isOpen, setOpen] = useState(false);
-  const [selectedTime, setSelectedTime] = useState(TIME_OPTIONS[0]);
 
   const handlePress = (selectedTime: any) => {
     setOpen(!isOpen);
-    setSelectedTime(selectedTime);
+    setDuration(selectedTime);
   };
 
   return (
@@ -34,7 +33,7 @@ const TimeDropdown = () => {
         }}
         onPress={() => setOpen(prev => !prev)}
       >
-        <Text style={{ fontSize: 12, color: '#ffffff' }}>{selectedTime.name}</Text>
+        <Text style={{ fontSize: 12, color: '#ffffff' }}>{duration.name}</Text>
         <Image source={require('../../../../assets/images/arrow-down.png')} />
       </Pressable>
 

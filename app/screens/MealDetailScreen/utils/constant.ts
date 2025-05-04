@@ -1,22 +1,22 @@
 export const NUTRITIONS = [
   {
-    name: 'Calories',
-    value: '180kCal',
+    name: 'kcal',
+    unit: ' kCal',
     icon: require('../../../../assets/images/calories-icon.png')
   },
   {
-    name: 'Fats',
-    value: '30g fats',
+    name: 'fat',
+    unit: 'g fats',
     icon: require('../../../../assets/images/trans-fat-icon.png')
   },
   {
-    name: 'Proteins',
-    value: '180kCal',
+    name: 'protein',
+    unit: 'g protein',
     icon: require('../../../../assets/images/protein-icon.png')
   },
   {
-    name: 'Carbo',
-    value: '180g carbo',
+    name: 'carbo',
+    unit: 'g carbo',
     icon: require('../../../../assets/images/rice-icon.png')
   }
 ];

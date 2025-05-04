@@ -1,4 +1,6 @@
-import { Image, Text, View } from 'react-native';
+import { useNavigation } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const CATEGORIES = [
@@ -29,16 +31,22 @@ const CATEGORIES = [
 ];
 
 const FoodCategoryCard = () => {
+  const navigation = useNavigation() as any;
+
+  const navigateToSearchResult = (keyword: string) => {
+    navigation.navigate('MealSearchResult', { keyword: keyword });
+  };
+
   return (
     <View style={{ gap: 10 }}>
       <Text style={{ color: '#1D1617', fontSize: 16, fontWeight: 'bold' }}>Loại</Text>
       <ScrollView horizontal>
         <View style={{ flexDirection: 'row', gap: 15 }}>
           {CATEGORIES.map((item, index) => (
-            <View
+            <TouchableOpacity
               key={index}
               style={{
-                width: 90,
+                width: 80,
                 height: 100,
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -46,6 +54,7 @@ const FoodCategoryCard = () => {
                 borderRadius: 16,
                 backgroundColor: item.color
               }}
+              onPress={() => navigateToSearchResult(item.name)}
             >
               <View
                 style={{
@@ -61,7 +70,7 @@ const FoodCategoryCard = () => {
               </View>
 
               <Text style={{ color: '#1D1617' }}>{item.name}</Text>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
       </ScrollView>

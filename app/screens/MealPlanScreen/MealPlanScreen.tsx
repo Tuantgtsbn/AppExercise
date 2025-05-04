@@ -1,16 +1,11 @@
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from '../HealthOverviewScreen/components/Header';
-import TimeDropdown from './components/timeDropdown';
-import MealDropdown from './components/mealDropdow';
-import { useNavigation } from 'expo-router';
 import MealNutritionChartSection from './layouts/MealNutritionChartSection';
 import CheckMealScheduleCard from './layouts/CheckMealScheduleCard';
 import TodayMealScheduleSection from './layouts/TodayMealScheduleSection';
 import ExploreFoodSection from './layouts/ExploreFoodSection';
 
 const MealPlanScreen = () => {
-  const navigation = useNavigation() as any;
-
   return (
     <ScrollView style={styles.container}>
       <Header title='Kế Hoạch Bữa Ăn' />

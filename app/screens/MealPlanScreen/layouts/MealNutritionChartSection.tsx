@@ -1,142 +1,42 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import TimeDropdown from '../components/timeDropdown';
 import { LineChart } from 'react-native-gifted-charts';
-import { NUTRITIONS } from '../utils/constant';
-import { useState } from 'react';
-
-const data: any = {
-  Calories: [
-    { value: 30, label: 'T2', dataPointText: '30', date: '23-1' },
-    { value: 45, label: 'T3', dataPointText: '45', date: '23-1' },
-    { value: 28, label: 'T4', dataPointText: '28', date: '23-1' },
-    { value: 80, label: 'T5', dataPointText: '80', date: '23-1' },
-    { value: 60, label: 'T6', dataPointText: '60', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 30, label: 'T2', dataPointText: '30', date: '23-1' },
-    { value: 45, label: 'T3', dataPointText: '45', date: '23-1' },
-    { value: 28, label: 'T4', dataPointText: '28', date: '23-1' },
-    { value: 80, label: 'T5', dataPointText: '80', date: '23-1' },
-    { value: 60, label: 'T6', dataPointText: '60', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 30, label: 'T2', dataPointText: '30', date: '23-1' },
-    { value: 45, label: 'T3', dataPointText: '45', date: '23-1' },
-    { value: 28, label: 'T4', dataPointText: '28', date: '23-1' },
-    { value: 80, label: 'T5', dataPointText: '80', date: '23-1' },
-    { value: 60, label: 'T6', dataPointText: '60', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' }
-  ],
-  Fat: [
-    { value: 50, label: 'T2', dataPointText: '30', date: '23-1' },
-    { value: 45, label: 'T3', dataPointText: '45', date: '23-1' },
-    { value: 28, label: 'T4', dataPointText: '28', date: '23-1' },
-    { value: 80, label: 'T5', dataPointText: '80', date: '23-1' },
-    { value: 60, label: 'T6', dataPointText: '60', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 30, label: 'T2', dataPointText: '30', date: '23-1' },
-    { value: 45, label: 'T3', dataPointText: '45', date: '23-1' },
-    { value: 28, label: 'T4', dataPointText: '28', date: '23-1' },
-    { value: 80, label: 'T5', dataPointText: '80', date: '23-1' },
-    { value: 60, label: 'T6', dataPointText: '60', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 30, label: 'T2', dataPointText: '30', date: '23-1' },
-    { value: 45, label: 'T3', dataPointText: '45', date: '23-1' },
-    { value: 28, label: 'T4', dataPointText: '28', date: '23-1' },
-    { value: 80, label: 'T5', dataPointText: '80', date: '23-1' },
-    { value: 60, label: 'T6', dataPointText: '60', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' }
-  ],
-  Protein: [
-    { value: 70, label: 'T2', dataPointText: '30', date: '23-1' },
-    { value: 45, label: 'T3', dataPointText: '45', date: '23-1' },
-    { value: 28, label: 'T4', dataPointText: '28', date: '23-1' },
-    { value: 80, label: 'T5', dataPointText: '80', date: '23-1' },
-    { value: 60, label: 'T6', dataPointText: '60', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 30, label: 'T2', dataPointText: '30', date: '23-1' },
-    { value: 45, label: 'T3', dataPointText: '45', date: '23-1' },
-    { value: 28, label: 'T4', dataPointText: '28', date: '23-1' },
-    { value: 80, label: 'T5', dataPointText: '80', date: '23-1' },
-    { value: 60, label: 'T6', dataPointText: '60', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 30, label: 'T2', dataPointText: '30', date: '23-1' },
-    { value: 45, label: 'T3', dataPointText: '45', date: '23-1' },
-    { value: 28, label: 'T4', dataPointText: '28', date: '23-1' },
-    { value: 80, label: 'T5', dataPointText: '80', date: '23-1' },
-    { value: 60, label: 'T6', dataPointText: '60', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' }
-  ],
-  Carbo: [
-    { value: 80, label: 'T2', dataPointText: '30', date: '23-1' },
-    { value: 45, label: 'T3', dataPointText: '45', date: '23-1' },
-    { value: 28, label: 'T4', dataPointText: '28', date: '23-1' },
-    { value: 80, label: 'T5', dataPointText: '80', date: '23-1' },
-    { value: 60, label: 'T6', dataPointText: '60', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 30, label: 'T2', dataPointText: '30', date: '23-1' },
-    { value: 45, label: 'T3', dataPointText: '45', date: '23-1' },
-    { value: 28, label: 'T4', dataPointText: '28', date: '23-1' },
-    { value: 80, label: 'T5', dataPointText: '80', date: '23-1' },
-    { value: 60, label: 'T6', dataPointText: '60', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 30, label: 'T2', dataPointText: '30', date: '23-1' },
-    { value: 45, label: 'T3', dataPointText: '45', date: '23-1' },
-    { value: 28, label: 'T4', dataPointText: '28', date: '23-1' },
-    { value: 80, label: 'T5', dataPointText: '80', date: '23-1' },
-    { value: 60, label: 'T6', dataPointText: '60', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' },
-    { value: 70, label: 'T7', dataPointText: '70', date: '23-1' }
-  ]
-};
+import { NUTRITIONS, TIME_OPTIONS } from '../utils/constant';
+import { useEffect, useState } from 'react';
 
 const MealNutritionChartSection = () => {
   const [selectedNutrition, setSelectedNutrition] = useState(NUTRITIONS[0]);
+  const [duration, setDuration] = useState(TIME_OPTIONS[0]);
+  const [nutritions, setNutritions] = useState<any>([]);
+
+  const data: any = {
+    Calories: nutritions.map((item: any) => ({
+      value: item.calories || 0,
+      date: item.date
+    })),
+    Fat: nutritions.map((item: any) => ({ value: item.fat, date: item.date })),
+    Protein: nutritions.map((item: any) => ({ value: item.protein, date: item.date })),
+    Carbo: nutritions.map((item: any) => ({ value: item.carbs, date: item.date }))
+  };
+
+  console.log('data1: ', data[selectedNutrition.name]);
+
+  useEffect(() => {
+    const fetchNutritionData = async () => {
+      try {
+        const response = await fetch(
+          `http://${process.env.BACKEND_HOST}/api/meal-schedule/nutrition?duration=${duration.value}`
+        );
+        if (!response.ok) throw new Error('Failed to fetch nutrition');
+        const data = await response.json();
+        setNutritions(data);
+      } catch (error) {
+        console.error('Error nutrition for selected duration:', error);
+      }
+    };
+
+    fetchNutritionData();
+  }, [duration]);
 
   return (
     <View style={{ gap: 10 }}>
@@ -145,7 +45,7 @@ const MealNutritionChartSection = () => {
           Dinh dưỡng bữa ăn
         </Text>
 
-        <TimeDropdown />
+        <TimeDropdown duration={duration} setDuration={setDuration} />
       </View>
 
       <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
