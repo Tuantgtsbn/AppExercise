@@ -31,6 +31,22 @@
         "android.permission.health.READ_BLOOD_PRESSURE",
         "android.permission.health.READ_OXYGEN_SATURATION",
         "android.permission.health.READ_HEART_RATE",
+        "android.permission.health.READ_SLEEP",
+        "android.permission.health.READ_STEPS",
+        "android.permission.health.WRITE_STEPS",
+        "android.permission.health.READ_WEIGHT",
+        "android.permission.health.WRITE_WEIGHT",
+        "android.permission.health.READ_HEIGHT",
+        "android.permission.health.WRITE_HEIGHT",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.health.READ_DISTANCE",
+        "android.permission.health.READ_ACTIVE_CALORIES_BURNED",
+        "android.permission.health.WRITE_ACTIVE_CALORIES_BURNED",
+        "android.permission.health.READ_TOTAL_CALORIES_BURNED",
+        "android.permission.health.WRITE_TOTAL_CALORIES_BURNED",
+        "android.permission.health.READ_BLOOD_PRESSURE",
+        "android.permission.health.READ_OXYGEN_SATURATION",
+        "android.permission.health.READ_HEART_RATE",
         "android.permission.health.READ_SLEEP"
       ],
       "adaptiveIcon": {
@@ -92,6 +108,12 @@
         "projectId": "ce618d7e-d267-41fc-a216-c5511f3e75ad"
       }
     },
-    "owner": "nguye"
+    "owner": "nguye",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/ce618d7e-d267-41fc-a216-c5511f3e75ad"
+    }
   }
 }
