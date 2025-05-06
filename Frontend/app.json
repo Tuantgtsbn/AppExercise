@@ -12,7 +12,7 @@
       "supportsTablet": true
     },
     "cli": {
-      "appVersionSource": "remote"
+      "appVersionSource": "local"
     },
     "android": {
       "permissions": [
