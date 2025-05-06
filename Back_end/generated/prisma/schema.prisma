@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  created_at           DateTime @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime @default(now()) @db.Timestamptz(6)
+  date_of_birth        DateTime @db.Date
+  first_name           String   @default("") @db.VarChar
+  last_name            String   @default("") @db.VarChar
+  email                String   @default("") @db.VarChar
+  gender               String   @default("male") @db.VarChar
+  height               Float    @db.Real
+  weight               Float    @db.Real
+  profile_img_url      String   @default("https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg") @db.VarChar
+  fitness_level        String   @default("normal") @db.VarChar
+  account_status       Boolean  @default(true)
+  google_fit_connected Boolean  @default(false)
+  phone                String   @default("") @db.VarChar
+  user_id              String   @id @default(dbgenerated("auth.uid()")) @db.Uuid
+}
